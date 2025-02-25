@@ -8,13 +8,15 @@ import CreateDragon from "../../components/CreateDragon/CreateDragon.jsx";
 import {useAuth} from "../../components/utils/AuthProvider.jsx";
 import AdditionalFunctions from "../../components/Other/AdditionalFunctions.jsx";
 import Alert from "../../components/Alert/Alert.jsx";
+import FileUploader from "../../components/Other/FileUploader.jsx";
+import {useNavigate} from "react-router-dom";
 
 function Home({ pageTitle }) {
     // const BASE_URL = "http://localhost:8080/backend-jakarta-ee-1.0-SNAPSHOT/api/user";
 
     const BASE_URL = "http://localhost:8080/backend-jakarta-ee-1.0-SNAPSHOT/api/user";
 
-    // надо проверять CreateDragon, DragonTable, Admin, Home, AdminTable
+    // надо проверять CreateDragon, DragonTable, Admin, Home, AdminTable, ImportHistory
 
     const { logout, isAuthenticated } = useAuth();
 
@@ -26,6 +28,8 @@ function Home({ pageTitle }) {
     const [alertActive, setAlertActive] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [alertStatus, setAlertStatus] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = pageTitle;
@@ -121,6 +125,22 @@ function Home({ pageTitle }) {
         <>
             <Navbar/>
             <div className={styles.wrapper}>
+                <h1>
+                    Загрузка файлов
+                </h1>
+
+                <FileUploader
+                    setAlertMessageParentState={setAlertMessage}
+                    setAlertStatusParentState={setAlertStatus}
+                />
+                <button onClick={() => {
+                    loadDataWrapperWithoutReload(crudReadMany, [`${BASE_URL}/import/history`]);
+                }}>ИСТОРИЯ ИМПОРТОВ (ТЕСТ)</button>
+
+                <button onClick={() => {
+                    navigate("/import/history");
+                }}>ИСТОРИЯ ИМПОРТОВ</button>
+
                 <h1>
                     Быстрые кнопки
                 </h1>

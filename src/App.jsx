@@ -8,6 +8,7 @@ import Auth from "./pages/Auth/Auth.jsx";
 import {AuthProvider, useAuth} from "./components/utils/AuthProvider.jsx";
 import Admin from "./pages/Admin/Admin.jsx";
 import Forbidden from "./pages/Forbidden/Forbidden.jsx";
+import ImportHistory from "./pages/ImportHistory/ImportHistory.jsx";
 // import CountDownToNewYear from "./pages/_Example/CountDownToNewYear/CountDownToNewYear.jsx";
 // import CountDownToVikasBirthday from "./pages/_Example/CountDownToVikasBirthday/CountDownToVikasBirthday.jsx";
 
@@ -27,6 +28,7 @@ function App() {
                               <Admin pageTitle="Панель управления" />
                           </ProtectedRoute>
                       } />
+                      <Route path="/import/history" element={<ImportHistory pageTitle="История импортов" />} />
                       {/*<Route path="/ny" element={<CountDownToNewYear pageTitle="Счётчик дней до Нового года" />} />*/}
                       {/*<Route path="/vbd" element={*/}
                       {/*    <ProtectedRoute isAuthenticated={isAuthenticated} requiredRoles={["USER"]}>*/}

@@ -1,4 +1,4 @@
-//-------------one-at-a-time
+// -------------------- one-at-a-time
 
 export function crudCreate(url, object) {
     return fetch(`${url}`, {
@@ -41,7 +41,7 @@ export function crudDelete(url, id) {
     })
 }
 
-//--------------------many
+// -------------------- many
 
 export function crudReadMany(
         url,
