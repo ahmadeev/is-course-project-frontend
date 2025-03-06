@@ -108,7 +108,7 @@ const DragonTable = ({
         coordinates,
         cave,
         killer,
-        200,  // Age,
+        Math.floor(Math.random() * (100500 - 1)) + 1,  // Age,
         "A fierce and powerful dragon", // Description
         150,  // Wingspan
         null, // No character
@@ -124,7 +124,7 @@ const DragonTable = ({
         coordinates,
         cave,
         killer,
-        200,  // Age,
+        Math.floor(Math.random() * (100500 - 1)) + 1,  // Age,
         "A fierce and powerful dragon", // Description
         1000,  // Wingspan
         "CUNNING", // No character

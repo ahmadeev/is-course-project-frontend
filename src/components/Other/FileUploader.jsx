@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-const FileUploader = ({ setAlertMessageParentState, setAlertStatusParentState }) => {
+const FileUploader = ({ setAlertMessageParentState, setAlertStatusParentState, setTableReloadParentState }) => {
     const BASE_URL = "http://localhost:8080/backend-jakarta-ee-1.0-SNAPSHOT/api/user/import/csv";
     const FILE_LOWER_LIMIT = 1;
 
@@ -23,7 +23,7 @@ const FileUploader = ({ setAlertMessageParentState, setAlertStatusParentState })
 
         // добавляем каждый файл в FormData с ключом "files"
         files.forEach((file) => {
-            formData.append('files', file); // используем "files" вместо "file"
+            formData.append('files', file);
         });
 
         try {
@@ -39,6 +39,7 @@ const FileUploader = ({ setAlertMessageParentState, setAlertStatusParentState })
 
             setAlertMessageParentState('Файлы успешно загружены!');
             setAlertStatusParentState((prev) => !prev);
+            setTableReloadParentState((prev) => !prev);
         } catch (error) {
             setAlertMessageParentState('Произошла ошибка: ' + error.message);
             setAlertStatusParentState((prev) => !prev);

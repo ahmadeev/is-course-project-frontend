@@ -132,10 +132,11 @@ function Home({ pageTitle }) {
                 <FileUploader
                     setAlertMessageParentState={setAlertMessage}
                     setAlertStatusParentState={setAlertStatus}
+                    setTableReloadParentState={setTableReload}
                 />
-                <button onClick={() => {
+  {/*              <button onClick={() => {
                     loadDataWrapperWithoutReload(crudReadMany, [`${BASE_URL}/import/history`]);
-                }}>ИСТОРИЯ ИМПОРТОВ (ТЕСТ)</button>
+                }}>ИСТОРИЯ ИМПОРТОВ (ТЕСТ)</button>*/}
 
                 <button onClick={() => {
                     navigate("/import/history");
