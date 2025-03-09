@@ -198,6 +198,7 @@ const ImportHistoryTable = ({ fetchData, readManyUrl, deleteOneUrl, loadDataWrap
                                     })
                                         .then(response => response.blob())
                                         .then(blob => {
+                                            // TODO: возможно переиспользование
                                             const link = document.createElement('a');
                                             link.href = URL.createObjectURL(blob);
                                             link.download = 'files.zip';
