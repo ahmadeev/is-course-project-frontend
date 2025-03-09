@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {crudDelete, crudUpdate} from "../../utils/crud.js";
 import {useAuth} from "../utils/AuthProvider.jsx";
 import styles from "./Table.module.css";
 
@@ -169,6 +168,7 @@ const ImportHistoryTable = ({ fetchData, readManyUrl, deleteOneUrl, loadDataWrap
                         <th>Status</th>
                         <th>User ID</th>
                         <th>Rows added</th>
+                        <th>Download</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -188,6 +188,27 @@ const ImportHistoryTable = ({ fetchData, readManyUrl, deleteOneUrl, loadDataWrap
                             <td>{item.status}</td>
                             <td>{item.userId}</td>
                             <td>{item.rowsAdded}</td>
+                            <td>
+                                <button onClick={() => {
+                                    fetch(BASE_URL + "/csv/" + item.id, {
+                                        method: 'GET',
+                                        headers: {
+                                            'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`,
+                                        },
+                                    })
+                                        .then(response => response.blob())
+                                        .then(blob => {
+                                            const link = document.createElement('a');
+                                            link.href = URL.createObjectURL(blob);
+                                            link.download = 'files.zip';
+                                            document.body.appendChild(link);
+                                            link.click();
+                                            document.body.removeChild(link);
+                                        });
+                                }}>
+                                    +
+                                </button>
+                            </td>
                         </tr>
                     ))}
                     </tbody>
