@@ -189,7 +189,8 @@ const ImportHistoryTable = ({ fetchData, readManyUrl, deleteOneUrl, loadDataWrap
                             <td>{item.userId}</td>
                             <td>{item.rowsAdded}</td>
                             <td>
-                                <button onClick={() => {
+                                <button disabled={item.status === "FAILURE"} onClick={() => {
+                                    // нет обработки ошибок :(
                                     fetch(BASE_URL + "/csv/" + item.id, {
                                         method: 'GET',
                                         headers: {
