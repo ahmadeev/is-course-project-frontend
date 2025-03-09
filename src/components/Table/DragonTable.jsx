@@ -307,12 +307,12 @@ const DragonTable = ({
                     {/* вынести функцию loadDataWrapper и хуки состояния isLoading и data */}
                     {isLoading && (
                         <tr>
-                            <td colSpan="21">Загрузка данных...</td>
+                            <td colSpan="37">Загрузка данных...</td>
                         </tr>
                     )}
                     {!isLoading && (!data || !data.length) && (
                         <tr>
-                            <td colSpan="32">Данные отсутствуют</td>
+                            <td colSpan="37">Данные отсутствуют</td>
                         </tr>
                     )}
                     {data && data.map(item => (
