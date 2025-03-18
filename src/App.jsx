@@ -8,6 +8,7 @@ import Auth from "./pages/_Common/Auth/Auth.jsx";
 import {AuthProvider, useAuth} from "./components/_DBD/utils/AuthProvider.jsx";
 import Admin from "./pages/_DBD/Admin/Admin.jsx";
 import Forbidden from "./pages/_Common/Forbidden/Forbidden.jsx";
+import Main from "./pages/_DBD/Main/Main.jsx";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -25,6 +26,7 @@ function App() {
                               <Admin pageTitle="Панель управления" />
                           </ProtectedRoute>
                       } />
+                      <Route path="/main" element={<Main pageTitle="Главная" />} />
                   </Routes>
               </HashRouter>
           </AuthProvider>
