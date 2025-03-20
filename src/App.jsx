@@ -9,6 +9,7 @@ import {AuthProvider, useAuth} from "./components/_DBD/utils/AuthProvider.jsx";
 import Admin from "./pages/_DBD/Admin/Admin.jsx";
 import Forbidden from "./pages/_Common/Forbidden/Forbidden.jsx";
 import Main from "./pages/_DBD/Main/Main.jsx";
+import CharacterPage from "./pages/_DBD/CharacterPage/CharacterPage.jsx";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -27,6 +28,7 @@ function App() {
                           </ProtectedRoute>
                       } />
                       <Route path="/main" element={<Main pageTitle="Главная" />} />
+                      <Route path="/perk/:text" element={<CharacterPage pageTitle="Навык" />} />
                   </Routes>
               </HashRouter>
           </AuthProvider>

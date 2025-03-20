@@ -65,7 +65,7 @@ const DynamicDataTable = ({
                     throw new Error();
                 }
                 const responseData = await response.json();
-                await setData(responseData.data);
+                setData(responseData.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {

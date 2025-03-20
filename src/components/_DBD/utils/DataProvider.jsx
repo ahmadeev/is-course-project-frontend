@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-    const [dlc, setDls] = useState(null);
+    const [dlc, setDlc] = useState(null);
     const [isDlcLoaded, setDlcLoaded] = useState(false);
     const DLC_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/dlc";
 
@@ -12,15 +12,13 @@ export const DataProvider = ({ children }) => {
 
     useEffect(() => {
         const fetchData  = async () => {
-            console.log("looking for dlcs")
             if (!isDlcLoaded) {
-                console.log("loading dlcs")
                 await fetch(DLC_URL)
                     .then((res) => res.json())
                     .then((result) => {
-                        setDls(result);
+                        setDlc(result.data);
                         setDlcLoaded(true);
-                        return result;
+                        return result.data;
                     })
                     .then((result) => {
                         for(const dlc of result) {
@@ -38,8 +36,6 @@ export const DataProvider = ({ children }) => {
                     })
                     .catch(console.error);
             }
-            console.log(survivorPerks);
-            console.log(killerPerks);
         }
         fetchData();
     }, [isDlcLoaded]);

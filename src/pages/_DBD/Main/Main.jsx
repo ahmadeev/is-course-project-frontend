@@ -39,7 +39,7 @@ function Main({ pageTitle }) {
                             baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/perk/killer"
                             tableReloadParentState={reloadKillerPerksTable}
                             setTableReloadParentState={setReloadKillerPerksTable}
-                            columns={["id", "name", "description", "killer"]}
+                            columns={["id", "name", "description", "killerId"]}
                         ></DynamicDataTable>
                     </>
                 )}
@@ -52,7 +52,7 @@ function Main({ pageTitle }) {
                             baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/perk/survivor"
                             tableReloadParentState={reloadSurvivorPerksTable}
                             setTableReloadParentState={setReloadSurvivorPerksTable}
-                            columns={["id", "name", "description", "killer"]}
+                            columns={["id", "name", "description", "survivorId"]}
                         ></DynamicDataTable>
                     </>
                 )}
@@ -65,7 +65,7 @@ function Main({ pageTitle }) {
                             baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer"
                             tableReloadParentState={reloadKillerBuildTable}
                             setTableReloadParentState={setReloadKillerBuildTable}
-                            columns={["id", "name", "description", "killer"]}
+                            columns={["id", "name", "description", "killerId"]}
                         ></DynamicDataTable>
                     </>
                 )}
@@ -78,7 +78,7 @@ function Main({ pageTitle }) {
                             baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor"
                             tableReloadParentState={reloadSurvivorBuildTable}
                             setTableReloadParentState={setReloadSurvivorBuildTable}
-                            columns={["id", "name", "description", "killer"]}
+                            columns={["id", "name", "description", "survivorId"]}
                         ></DynamicDataTable>
                     </>
                 )}
