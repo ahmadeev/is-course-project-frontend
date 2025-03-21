@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './PerkCard.module.css'; // Импорт стилей
+import styles from './PerkCard.module.css';
 
 const PerkCard = ({ perk }) => {
     const { id, name, description } = perk;
@@ -20,24 +20,10 @@ const PerkCard = ({ perk }) => {
                 <p className={styles.description}>
                     {description || 'Описание отсутствует'}
                 </p>
-                <p className={styles.killerId}>Character ID: {characterId}</p>
+                <p className={styles.characterId}>Character ID: {characterId}</p>
             </div>
         </div>
     );
 };
 
-const PerkList = ({ data }) => {
-    if (!data || data.length === 0) {
-        return <p>Загрузка...</p>;
-    }
-
-    return (
-        <div className={styles.listContainer}>
-            {data.map((perk, index) => (
-                <PerkCard key={index} perk={perk} />
-            ))}
-        </div>
-    );
-};
-
-export default PerkList;
+export default PerkCard;

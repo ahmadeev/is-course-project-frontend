@@ -4,6 +4,7 @@ import Navbar from "../../../components/_DBD/Navbar/Navbar.jsx";
 import styles from "./CharacterPage.module.css";
 import {useLocation} from "react-router-dom";
 import PerkList from "../../../components/_DBD/PerkCard/PerkCard.jsx";
+import CharacterCard from "../../../components/_DBD/CharacterCard/CharacterCard.jsx";
 
 function CharacterPage({ pageTitle }) {
 
@@ -19,8 +20,9 @@ function CharacterPage({ pageTitle }) {
         <>
             <Navbar/>
             <div className={styles.wrapper}>
-                <img src={characterImageStubUrl} alt={name} className={styles.image}/>
-                <PerkList data={state.character.perks}/>
+                {/*<img src={characterImageStubUrl} alt={name} className={styles.image}/>*/}
+                {/*<PerkList data={state.character.perks}/>*/}
+                <CharacterCard character={state.character} imageUrl={characterImageStubUrl} />
             </div>
         </>
     )

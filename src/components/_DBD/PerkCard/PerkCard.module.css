@@ -29,16 +29,3 @@
     color: #888;
     margin: 5px 0;
 }
-
-.description {
-    font-size: 1rem;
-    color: #444;
-    margin: 10px 0;
-    line-height: 1.4;
-}
-
-.killerId {
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 10px;
-}
