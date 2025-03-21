@@ -11,6 +11,9 @@ export const DataProvider = ({ children }) => {
     const [killerPerks, setKillerPerks] = useState([]);
 
     useEffect(() => {
+        console.log("Загрузка перков")
+        console.log("Перки Выживших: ", survivorPerks)
+        console.log("Перки Убийц: ", killerPerks)
         const fetchData  = async () => {
             if (!isDlcLoaded) {
                 await fetch(DLC_URL)
