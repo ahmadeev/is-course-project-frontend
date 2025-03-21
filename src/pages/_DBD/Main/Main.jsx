@@ -1,6 +1,6 @@
 import Navbar from "../../../components/_DBD/Navbar/Navbar.jsx";
 import styles from "./Main.module.css";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useData} from "../../../components/_DBD/utils/DataProvider.jsx";
 import DynamicDataTable from "../../../components/_DBD/Table/DynamicDataTable.jsx";
 import {crudReadMany} from "../../../utils/crud.js";
@@ -65,7 +65,25 @@ function Main({ pageTitle }) {
                             baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer"
                             tableReloadParentState={reloadKillerBuildTable}
                             setTableReloadParentState={setReloadKillerBuildTable}
-                            columns={["id", "name", "description", "killerId"]}
+                            columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin"]}
+
+                            renderRow={(item, rowIndex) => {
+                                let columns= ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin"];
+
+                                return (
+                                    <tr key={item.id || rowIndex}>
+                                        {columns.map((col, colIndex) => {
+                                            if (col.startsWith("perk")) {
+                                                const perkIndex = parseInt(col.split(" ")[1]) - 1; // Например, "perk 1" -> 0
+                                                const perk = item.perks[perkIndex];
+                                                return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
+                                            } else {
+                                                return <td key={colIndex}>{"" + item[col]}</td>;
+                                            }
+                                        })}
+                                    </tr>
+                                )
+                            }}
                         ></DynamicDataTable>
                     </>
                 )}
@@ -78,7 +96,25 @@ function Main({ pageTitle }) {
                             baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor"
                             tableReloadParentState={reloadSurvivorBuildTable}
                             setTableReloadParentState={setReloadSurvivorBuildTable}
-                            columns={["id", "name", "description", "survivorId"]}
+                            columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin"]}
+
+                            renderRow={(item, rowIndex) => {
+                                let columns= ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin"];
+
+                                return (
+                                    <tr key={item.id || rowIndex}>
+                                        {columns.map((col, colIndex) => {
+                                            if (col.startsWith("perk")) {
+                                                const perkIndex = parseInt(col.split(" ")[1]) - 1; // Например, "perk 1" -> 0
+                                                const perk = item.perks[perkIndex];
+                                                return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
+                                            } else {
+                                                return <td key={colIndex}>{"" + item[col]}</td>;
+                                            }
+                                        })}
+                                    </tr>
+                                )
+                            }}
                         ></DynamicDataTable>
                     </>
                 )}
