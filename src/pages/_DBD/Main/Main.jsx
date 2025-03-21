@@ -16,7 +16,7 @@ function Main({ pageTitle }) {
     const [typeState, setTypeState] = useState("build");
 
     const {killerPerks, survivorPerks} = useData();
-    const { favoriteKillerBuildIds, favoriteSurvivorBuildIds, setIsFavoriteLoaded } = useData();
+    const { favoriteKillerBuildIds, favoriteSurvivorBuildIds, setFavoriteKillerBuildIds, setFavoriteSurvivorBuildIds, setIsFavoriteLoaded } = useData();
 
     const [reloadKillerPerksTable, setReloadKillerPerksTable] = useState(false);
     const [reloadSurvivorPerksTable, setReloadSurvivorPerksTable] = useState(false);
@@ -97,36 +97,36 @@ function Main({ pageTitle }) {
                                                 return (
                                                     <td key={colIndex}>
                                                         <button
-                                                            className={favoriteKillerBuildIds?.includes(item.id) ? styles.inFavorite : styles.notInFavorite}
-                                                            onClick={() => {
-                                                                let isAboutToAdd = !favoriteKillerBuildIds?.includes(item.id);
-                                                                if (isAboutToAdd) {
-                                                                    fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`, {
-                                                                        method: "POST"
-                                                                    })
-                                                                        .then((res) => res.json())
-                                                                        .then((result) => {
-                                                                            console.log(result);
-                                                                        })
-                                                                        .catch((error) => {
-                                                                            console.log(error);
-                                                                        })
-                                                                } else {
-                                                                    fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`, {
-                                                                        method: "DELETE"
-                                                                    })
-                                                                        .then((res) => res.json())
-                                                                        .then((result) => {
-                                                                            console.log(result);
-                                                                        })
-                                                                        .catch((error) => {
-                                                                            console.log(error);
-                                                                        })
+                                                            className={favoriteKillerBuildIds?.includes(Number(item.id)) ? styles.inFavorite : styles.notInFavorite}
+                                                            onClick={async () => {
+                                                                const isAboutToAdd = !favoriteKillerBuildIds?.includes(Number(item.id));
+                                                                try {
+                                                                    if (isAboutToAdd) {
+                                                                        const response = await fetch(
+                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
+                                                                            {method: "POST"}
+                                                                        );
+                                                                        const result = await response.json();
+                                                                        if (result.status === "SUCCESS") {
+                                                                            setFavoriteKillerBuildIds(prev => [...prev, Number(item.id)]);
+                                                                        }
+                                                                    } else {
+                                                                        const response = await fetch(
+                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
+                                                                            {method: "DELETE"}
+                                                                        );
+                                                                        const result = await response.json();
+                                                                        if (result.status === "SUCCESS") {
+                                                                            setFavoriteKillerBuildIds(prev => prev.filter(id => id !== Number(item.id)));
+                                                                        }
+                                                                    }
+                                                                } catch (error) {
+                                                                    console.error("Ошибка:", error);
+                                                                    setIsFavoriteLoaded(false); // Рефетч при ошибке
                                                                 }
-
-                                                                setIsFavoriteLoaded(false);
                                                             }}
-                                                        >add</button>
+                                                        >add
+                                                        </button>
                                                     </td>
                                                 );
                                             } else {
@@ -150,7 +150,7 @@ function Main({ pageTitle }) {
                             setTableReloadParentState={setReloadSurvivorBuildTable}
                             columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"]}
                             renderRow={(item, rowIndex) => {
-                                let columns= ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"];
+                                let columns = ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"];
 
                                 return (
                                     <tr key={item.id || rowIndex}>
@@ -163,35 +163,36 @@ function Main({ pageTitle }) {
                                                 return (
                                                     <td key={colIndex}>
                                                         <button
-                                                            className={favoriteSurvivorBuildIds?.includes(item.id) ? styles.inFavorite : styles.notInFavorite}
-                                                            onClick={() => {
-                                                                let isAboutToAdd = !favoriteSurvivorBuildIds?.includes(item.id);
-                                                                if (isAboutToAdd) {
-                                                                    fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor/${item.id}`, {
-                                                                        method: "POST"
-                                                                    })
-                                                                        .then((res) => res.json())
-                                                                        .then((result) => {
-                                                                            console.log(result);
-                                                                        })
-                                                                        .catch((error) => {
-                                                                            console.log(error);
-                                                                        })
-                                                                } else {
-                                                                    fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor/${item.id}`, {
-                                                                        method: "DELETE"
-                                                                    })
-                                                                        .then((res) => res.json())
-                                                                        .then((result) => {
-                                                                            console.log(result);
-                                                                        })
-                                                                        .catch((error) => {
-                                                                            console.log(error);
-                                                                        })
+                                                            className={favoriteSurvivorBuildIds?.includes(Number(item.id)) ? styles.inFavorite : styles.notInFavorite}
+                                                            onClick={async () => {
+                                                                const isAboutToAdd = !favoriteSurvivorBuildIds?.includes(Number(item.id));
+                                                                try {
+                                                                    if (isAboutToAdd) {
+                                                                        const response = await fetch(
+                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor/${item.id}`,
+                                                                            {method: "POST"}
+                                                                        );
+                                                                        const result = await response.json();
+                                                                        if (result.status === "SUCCESS") {
+                                                                            setFavoriteSurvivorBuildIds(prev => [...prev, Number(item.id)]);
+                                                                        }
+                                                                    } else {
+                                                                        const response = await fetch(
+                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor/${item.id}`,
+                                                                            {method: "DELETE"}
+                                                                        );
+                                                                        const result = await response.json();
+                                                                        if (result.status === "SUCCESS") {
+                                                                            setFavoriteSurvivorBuildIds(prev => prev.filter(id => id !== Number(item.id)));
+                                                                        }
+                                                                    }
+                                                                } catch (error) {
+                                                                    console.error("Ошибка:", error);
+                                                                    setIsFavoriteLoaded(false); // Рефетч при ошибке
                                                                 }
-                                                                setIsFavoriteLoaded(false);
                                                             }}
-                                                        >add</button>
+                                                        >add
+                                                        </button>
                                                     </td>
                                                 );
                                             } else {

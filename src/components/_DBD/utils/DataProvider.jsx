@@ -59,8 +59,8 @@ export const DataProvider = ({ children }) => {
         fetchData();
     }, [isDlcLoaded]);
 
-    useEffect(() => {
-/*        const fetchData  = async () => {
+/*    useEffect(() => {
+/!*        const fetchData  = async () => {
             if (!isFavoriteLoaded) {
                 await fetch(FAVORITE_SURVIVOR_BUILDS_URL)
                     .then((res) => res.json())
@@ -92,7 +92,7 @@ export const DataProvider = ({ children }) => {
                 setIsFavoriteLoaded(true);
             }
         }
-        fetchData();*/
+        fetchData();*!/
 
         const fetchFavoriteBuilds = async () => {
             try {
@@ -134,13 +134,49 @@ export const DataProvider = ({ children }) => {
             }
         };
 
-// Вызываем функцию
+        // Вызываем функцию
         fetchFavoriteBuilds();
         return setIsFavoriteLoaded(true);
-    }, [isFavoriteLoaded])
+    }, [isFavoriteLoaded])*/
+
+    useEffect(() => {
+        const fetchFavoriteBuilds = async () => {
+            try {
+                const [survivorResponse, killerResponse] = await Promise.all([
+                    fetch(FAVORITE_SURVIVOR_BUILDS_URL).then(res => res.json()),
+                    fetch(FAVORITE_KILLER_BUILDS_URL).then(res => res.json())
+                ]);
+
+                if (survivorResponse.status !== 'SUCCESS') throw new Error('Survivor fetch failed');
+                if (killerResponse.status !== 'SUCCESS') throw new Error('Killer fetch failed');
+
+                const survivorBuilds = Array.isArray(survivorResponse.data) ? survivorResponse.data : [];
+                const killerBuilds = Array.isArray(killerResponse.data) ? killerResponse.data : [];
+
+                setFavoriteSurvivorBuilds(survivorBuilds);
+                setFavoriteSurvivorBuildIds(survivorBuilds.map(build => Number(build.id)));
+                setFavoriteKillerBuilds(killerBuilds);
+                setFavoriteKillerBuildIds(killerBuilds.map(build => Number(build.id)));
+            } catch (error) {
+                console.error('Error fetching favorite builds:', error);
+                setFavoriteSurvivorBuilds([]);
+                setFavoriteSurvivorBuildIds([]);
+                setFavoriteKillerBuilds([]);
+                setFavoriteKillerBuildIds([]);
+            } finally {
+                setIsFavoriteLoaded(true);
+            }
+        };
+
+        if (!isFavoriteLoaded) fetchFavoriteBuilds();
+    }, [isFavoriteLoaded]);
 
     return (
-        <DataContext.Provider value={{dlc, survivorPerks, killerPerks, favoriteSurvivorBuildIds, favoriteKillerBuildIds, setIsFavoriteLoaded}}>
+        <DataContext.Provider value={{
+            dlc,
+            survivorPerks, killerPerks,
+            favoriteSurvivorBuildIds, setFavoriteSurvivorBuildIds, favoriteKillerBuildIds, setFavoriteKillerBuildIds, setIsFavoriteLoaded
+        }}>
             {children}
         </DataContext.Provider>
     );
