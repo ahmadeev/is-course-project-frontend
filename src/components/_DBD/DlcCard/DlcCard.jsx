@@ -23,7 +23,7 @@ const DlcCard = ({ dlc }) => {
                         {dlc.survivors.map((survivor, index) => (
                             <li key={index} className={styles.listItem}>
                                 <Link
-                                    to={`/perk/${survivor.name}`}
+                                    to={`/character/${survivor.name}`}
                                     className={styles.link}
                                     state={{character: survivor, who: "survivor"}}
                                 >
@@ -44,7 +44,7 @@ const DlcCard = ({ dlc }) => {
                         {dlc.killers.map((killer, index) => (
                             <li key={index} className={styles.listItem}>
                                 <Link
-                                    to={`/perk/${killer.name}`}
+                                    to={`/character/${killer.name}`}
                                     className={styles.link}
                                     state={{character: killer, who: "killer"}}
                                 >

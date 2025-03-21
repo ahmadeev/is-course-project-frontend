@@ -28,7 +28,7 @@ function App() {
                           </ProtectedRoute>
                       } />
                       <Route path="/main" element={<Main pageTitle="Главная" />} />
-                      <Route path="/perk/:text" element={<CharacterPage pageTitle="Навык" />} />
+                      <Route path="/character/:text" element={<CharacterPage pageTitle="Персонаж" />} />
                   </Routes>
               </HashRouter>
           </AuthProvider>
