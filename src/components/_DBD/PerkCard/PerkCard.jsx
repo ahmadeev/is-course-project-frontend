@@ -5,7 +5,7 @@ const PerkCard = ({ perk }) => {
     const { id, name, description } = perk;
     const characterId = perk.killerId ? perk.killerId : perk.survivorId;
 
-    // Формируем URL для изображения на основе id перка
+    // формируем URL для изображения на основе id перка
     // const imageUrl = `/images/perks/${id}.png`;
     const stub = "src/assets/stub_perk.png"
 

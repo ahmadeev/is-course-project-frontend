@@ -90,7 +90,7 @@ function Main({ pageTitle }) {
                                     <tr key={item.id || rowIndex}>
                                         {columns.map((col, colIndex) => {
                                             if (col.startsWith("perk")) {
-                                                const perkIndex = parseInt(col.split(" ")[1]) - 1; // Например, "perk 1" -> 0
+                                                const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
                                                 const perk = item.perks[perkIndex];
                                                 return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
                                             } else if (col.startsWith("favorite")) {
@@ -122,10 +122,10 @@ function Main({ pageTitle }) {
                                                                     }
                                                                 } catch (error) {
                                                                     console.error("Ошибка:", error);
-                                                                    setIsFavoriteLoaded(false); // Рефетч при ошибке
+                                                                    setIsFavoriteLoaded(false); // рефетч в глобальном компоненте при ошибке
                                                                 }
                                                             }}
-                                                        >add
+                                                        >{favoriteKillerBuildIds?.includes(item.id) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>}
                                                         </button>
                                                     </td>
                                                 );
@@ -156,7 +156,7 @@ function Main({ pageTitle }) {
                                     <tr key={item.id || rowIndex}>
                                         {columns.map((col, colIndex) => {
                                             if (col.startsWith("perk")) {
-                                                const perkIndex = parseInt(col.split(" ")[1]) - 1; // Например, "perk 1" -> 0
+                                                const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
                                                 const perk = item.perks[perkIndex];
                                                 return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
                                             } else if (col.startsWith("favorite")) {
@@ -188,10 +188,10 @@ function Main({ pageTitle }) {
                                                                     }
                                                                 } catch (error) {
                                                                     console.error("Ошибка:", error);
-                                                                    setIsFavoriteLoaded(false); // Рефетч при ошибке
+                                                                    setIsFavoriteLoaded(false); // рефетч при ошибке
                                                                 }
                                                             }}
-                                                        >add
+                                                        >{favoriteSurvivorBuildIds?.includes(item.id) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>}
                                                         </button>
                                                     </td>
                                                 );

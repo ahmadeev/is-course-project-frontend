@@ -4,7 +4,7 @@ const PerkSelector = ({ onSelect, closeModal, allPerks }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedPerks, setSelectedPerks] = useState([]);
 
-    // Фильтрация перков по поисковому запросу
+    // фильтрация перков по поисковому запросу
     const filteredPerks = allPerks.filter(perk =>
         perk.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -13,8 +13,8 @@ const PerkSelector = ({ onSelect, closeModal, allPerks }) => {
         if (selectedPerks.length < 4 && !selectedPerks.includes(perk)) {
             const newSelected = [...selectedPerks, perk];
             setSelectedPerks(newSelected);
-            onSelect(perk); // Передаем выбранный перк в родительский компонент
-            if (newSelected.length === 4) closeModal(); // Закрываем окно после выбора 4 перков
+            onSelect(perk); // передать выбранный перк в родительский компонент
+            if (newSelected.length === 4) closeModal(); // закрыть окно после выбора 4 перков
         }
     };
 
