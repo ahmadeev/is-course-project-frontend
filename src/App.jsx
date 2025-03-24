@@ -17,6 +17,7 @@ import Id from "./pages/_DBD/Id/Id.jsx";
 function App() {
   const { isAuthenticated } = useAuth();
 
+  // зачем повторно обернул непонятно. уже не помню
   return (
       <>
           <AuthProvider>

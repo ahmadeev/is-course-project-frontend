@@ -5,6 +5,7 @@ import DynamicDataTable from "../../../components/_DBD/Table/DynamicDataTable.js
 import {crudReadMany} from "../../../utils/crud.js";
 import {useData} from "../../../components/_DBD/utils/DataProvider.jsx";
 import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
+import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
 
 function Id({ pageTitle }) {
 
@@ -20,6 +21,8 @@ function Id({ pageTitle }) {
 
     const [reloadKillerBuildTable, setReloadKillerBuildTable] = useState(false);
     const [reloadSurvivorBuildTable, setReloadSurvivorBuildTable] = useState(false);
+
+    const { hasRole } = useAuth();
     // ------
 
     return (
@@ -94,13 +97,40 @@ function Id({ pageTitle }) {
                                                                 }
                                                             }}
                                                         >
-                                                            <option value={0}>0</option>
+                                                            <option disabled value={0}>0</option>
                                                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                                                                 <option key={num} value={num}>{num}</option>
                                                             ))}
                                                         </select>
                                                     </td>
-                                                )} else if (col.startsWith("favorite")) {
+                                                )} else if (col === "approvedByAdmin") {
+                                                return (
+                                                    <td key={colIndex}>
+                                                        {
+                                                            hasRole("ROLE_ADMIN") && (
+                                                                <input type="checkbox" checked={item.approvedByAdmin}
+                                                                       onChange={async () => {
+                                                                           const response = await fetch(
+                                                                               `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer/${item.id}/approve?approved=${!item.approvedByAdmin}`,
+                                                                               {method: "PUT"}
+                                                                           );
+                                                                           /*const result = await response.json();
+                                                                           if (result.status === "SUCCESS") {
+                                                                               // оптимистичное обновление можно сделать
+                                                                           }*/
+                                                                           setReloadKillerBuildTable(prev => !prev);
+                                                                       }}/>
+                                                            )
+                                                        }
+                                                        {
+                                                            !hasRole("ROLE_ADMIN") && (
+                                                                "" + item.approvedByAdmin
+                                                            )
+                                                        }
+
+                                                    </td>
+                                                )
+                                            } else if (col.startsWith("favorite")) {
                                                 return (
                                                     <td key={colIndex}>
                                                         <button
@@ -191,13 +221,40 @@ function Id({ pageTitle }) {
                                                                 }
                                                             }}
                                                         >
-                                                            <option value={0}>0</option>
+                                                            <option disabled value={0}>0</option>
                                                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                                                                 <option key={num} value={num}>{num}</option>
                                                             ))}
                                                         </select>
                                                     </td>
                                                 );
+                                            } else if (col === "approvedByAdmin") {
+                                                return (
+                                                    <td key={colIndex}>
+                                                        {
+                                                            hasRole("ROLE_ADMIN") && (
+                                                                <input type="checkbox" checked={item.approvedByAdmin}
+                                                                       onChange={async () => {
+                                                                           const response = await fetch(
+                                                                               `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor/${item.id}/approve?approved=${!item.approvedByAdmin}`,
+                                                                               {method: "PUT"}
+                                                                           );
+                                                                           /*const result = await response.json();
+                                                                           if (result.status === "SUCCESS") {
+                                                                               // оптимистичное обновление можно сделать
+                                                                           }*/
+                                                                           setReloadSurvivorBuildTable(prev => !prev);
+                                                                       }}/>
+                                                            )
+                                                        }
+                                                        {
+                                                            !hasRole("ROLE_ADMIN") && (
+                                                                "" + item.approvedByAdmin
+                                                            )
+                                                        }
+
+                                                    </td>
+                                                )
                                             } else if (col.startsWith("favorite")) {
                                                 return (
                                                     <td key={colIndex}>

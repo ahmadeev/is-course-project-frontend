@@ -22,6 +22,9 @@ export const AuthProvider = ({ children }) => {
         return savedRoles ? JSON.parse(savedRoles) : [];
     });
 
+    // TODO: new
+    const [user, setUser] = useState(null);
+
     // метод для входа в систему
     const signIn = (name, password) => {
         console.log("Sign in...");
@@ -52,6 +55,9 @@ export const AuthProvider = ({ children }) => {
                     sessionStorage.setItem("session-token", responseData.data.token)
                     sessionStorage.setItem("session-username", name)
                     sessionStorage.setItem("session-roles", JSON.stringify(roles));
+
+                    // TODO: new
+                    setUser({id: 1, username: name, roles: roles});
                 }
                 return responseData;
             })
@@ -85,6 +91,9 @@ export const AuthProvider = ({ children }) => {
         sessionStorage.setItem("session-username", "")
         sessionStorage.setItem("session-roles", "[] ")
         console.log("isAuthenticated after logout: ", isAuthenticated, "\nexpected: false");
+
+        // TODO: new
+        setUser(null);
     };
 
     const checkAuthStatus = async () => {
@@ -104,7 +113,9 @@ export const AuthProvider = ({ children }) => {
 
     // значения, которые будут доступны всем компонентам, использующим AuthContext
     return (
-        <AuthContext.Provider value={{ isAuthenticated, username, roles, hasRole, signIn, signUp, logout, checkAuthStatus }}>
+        <AuthContext.Provider value={{
+            isAuthenticated, username, roles, hasRole, signIn, signUp, logout, checkAuthStatus, user // TODO: new!!!
+        }}>
             {children}
         </AuthContext.Provider>
     );
