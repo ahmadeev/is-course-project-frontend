@@ -12,6 +12,7 @@ import Main from "./pages/_DBD/Main/Main.jsx";
 import CharacterPage from "./pages/_DBD/CharacterPage/CharacterPage.jsx";
 import BuildCreator from "./pages/_DBD/BuildCreator/BuildCreator.jsx";
 import BuildGenerator from "./pages/_DBD/BuildGenerator/BuildGenerator.jsx";
+import Id from "./pages/_DBD/Id/Id.jsx";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -31,8 +32,9 @@ function App() {
                       } />
                       <Route path="/main" element={<Main pageTitle="Главная" />} />
                       <Route path="/character/:text" element={<CharacterPage pageTitle="Персонаж" />} />
-                      <Route path="/add-build" element={<BuildCreator />} />
+                      <Route path="/add-match" element={<BuildCreator />} />
                       <Route path="/generate-build" element={<BuildGenerator />} />
+                      <Route path="/id" element={<Id />} />
                   </Routes>
               </HashRouter>
           </AuthProvider>

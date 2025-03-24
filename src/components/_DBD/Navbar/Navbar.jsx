@@ -23,8 +23,9 @@ function Navbar() {
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/">home</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/admin">admin</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/main">main</NavLink>
-                <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/add-build">add build</NavLink>
+                <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/add-match">add match</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/generate-build">generate build</NavLink>
+                <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/id">id</NavLink>
 
                 <div style={div_style}>
                     {

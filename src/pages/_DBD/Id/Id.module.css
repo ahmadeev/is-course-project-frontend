@@ -1,0 +1,17 @@
+.wrapper {
+    width: 80vw;
+    min-width: 320px;
+
+    background-color: #ffffff;
+
+    display: flex;
+    align-items: center;        /* align-content ? */
+    justify-content: center;    /* а точно ли эти два то же самое, что и place-items: center ? */
+    flex-direction: column;
+
+    padding: 2rem;
+
+    color: #686C5E;
+    height: auto;
+    margin-top: 10vh;           /* для фиксированного navbar */
+}

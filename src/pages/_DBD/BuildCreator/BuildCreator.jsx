@@ -5,6 +5,7 @@ import PerkSelector from "../../../components/_DBD/RandomizePerks/PerkSelector.j
 import style from "./BuildCreator.module.css";
 import {useData} from "../../../components/_DBD/utils/DataProvider.jsx";
 import Navbar from "../../../components/_DBD/Navbar/Navbar.jsx";
+import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
 
 const BuildCreator = () => {
     const [selectedPerks, setSelectedPerks] = useState([]);
@@ -18,15 +19,22 @@ const BuildCreator = () => {
 
     const stub = "src/assets/stub_perk.png"
     const { killerPerks, survivorPerks } = useData();
-    const [isKiller, setIsKiller] = useState(true);
+
+    const [characterState, setCharacterState] = useState("killer");
 
     return (
         <>
             <Navbar/>
             <div className={style.wrapper}>
                 <h1>Создание билда</h1>
-                <h2><span onClick={() => setIsKiller(true)}>Killer</span>/<span
-                    onClick={() => setIsKiller(false)}>Survivor</span></h2>
+                <ToggleSwitch
+                    options={[
+                        {label: "Killer", value: "killer"},
+                        {label: "Survivor", value: "survivor"}
+                    ]}
+                    selected={characterState}
+                    onChange={setCharacterState}
+                />
                 <div style={{display: 'flex', gap: '10px'}}>
                     {selectedPerks.map(perk => (
                         <div key={perk.id}>
@@ -46,7 +54,7 @@ const BuildCreator = () => {
                     <PerkSelector
                         onSelect={handleSelect}
                         closeModal={() => setModalIsOpen(false)}
-                        allPerks={isKiller ? killerPerks : survivorPerks}
+                        allPerks={characterState === "killer" ? killerPerks : survivorPerks}
                     />
                     <button onClick={() => setModalIsOpen(false)}>Закрыть</button>
                 </Modal>
