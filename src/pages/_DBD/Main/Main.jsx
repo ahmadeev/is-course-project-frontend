@@ -93,42 +93,73 @@ function Main({ pageTitle }) {
                                                 const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
                                                 const perk = item.perks[perkIndex];
                                                 return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
-                                            } else if (col.startsWith("favorite")) {
+                                            } else if (col === "rating") {
                                                 return (
                                                     <td key={colIndex}>
-                                                        <button
-                                                            className={favoriteKillerBuildIds?.includes(Number(item.id)) ? styles.inFavorite : styles.notInFavorite}
-                                                            onClick={async () => {
-                                                                const isAboutToAdd = !favoriteKillerBuildIds?.includes(Number(item.id));
+                                                        <select
+                                                            value={item.rating || 0}
+                                                            onChange={async (e) => {
+                                                                const newRating = e.target.value;
                                                                 try {
-                                                                    if (isAboutToAdd) {
-                                                                        const response = await fetch(
-                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
-                                                                            {method: "POST"}
-                                                                        );
-                                                                        const result = await response.json();
-                                                                        if (result.status === "SUCCESS") {
-                                                                            setFavoriteKillerBuildIds(prev => [...prev, Number(item.id)]);
+                                                                    const response = await fetch(
+                                                                        `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer/${item.id}/rating?rating=${newRating}`,
+                                                                        {
+                                                                            method: "PATCH",
+                                                                            // headers: { "Content-Type": "application/json" },
+                                                                            // body: JSON.stringify({ rating: newRating })
                                                                         }
-                                                                    } else {
-                                                                        const response = await fetch(
-                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
-                                                                            {method: "DELETE"}
-                                                                        );
-                                                                        const result = await response.json();
-                                                                        if (result.status === "SUCCESS") {
-                                                                            setFavoriteKillerBuildIds(prev => prev.filter(id => id !== Number(item.id)));
-                                                                        }
+                                                                    );
+                                                                    const result = await response.json();
+                                                                    if (result.status === "SUCCESS") {
+                                                                        setReloadKillerBuildTable(prev => !prev);
                                                                     }
                                                                 } catch (error) {
-                                                                    console.error("Ошибка:", error);
-                                                                    setIsFavoriteLoaded(false); // рефетч в глобальном компоненте при ошибке
+                                                                    console.error("Ошибка при обновлении рейтинга:", error);
                                                                 }
                                                             }}
-                                                        >{favoriteKillerBuildIds?.includes(item.id) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>}
-                                                        </button>
+                                                        >
+                                                            <option value={0}>0</option>
+                                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                                                                <option key={num} value={num}>{num}</option>
+                                                            ))}
+                                                        </select>
                                                     </td>
-                                                );
+                                                )} else if (col.startsWith("favorite")) {
+                                                    return (
+                                                        <td key={colIndex}>
+                                                            <button
+                                                                className={favoriteKillerBuildIds?.includes(Number(item.id)) ? styles.inFavorite : styles.notInFavorite}
+                                                                onClick={async () => {
+                                                                    const isAboutToAdd = !favoriteKillerBuildIds?.includes(Number(item.id));
+                                                                    try {
+                                                                        if (isAboutToAdd) {
+                                                                            const response = await fetch(
+                                                                                `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
+                                                                                {method: "POST"}
+                                                                            );
+                                                                            const result = await response.json();
+                                                                            if (result.status === "SUCCESS") {
+                                                                                setFavoriteKillerBuildIds(prev => [...prev, Number(item.id)]);
+                                                                            }
+                                                                        } else {
+                                                                            const response = await fetch(
+                                                                                `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
+                                                                                {method: "DELETE"}
+                                                                            );
+                                                                            const result = await response.json();
+                                                                            if (result.status === "SUCCESS") {
+                                                                                setFavoriteKillerBuildIds(prev => prev.filter(id => id !== Number(item.id)));
+                                                                            }
+                                                                        }
+                                                                    } catch (error) {
+                                                                        console.error("Ошибка:", error);
+                                                                        setIsFavoriteLoaded(false); // рефетч в глобальном компоненте при ошибке
+                                                                    }
+                                                                }}
+                                                            >{favoriteKillerBuildIds?.includes(item.id) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>}
+                                                            </button>
+                                                        </td>
+                                                    );
                                             } else {
                                                 return <td key={colIndex}>{"" + item[col]}</td>;
                                             }
@@ -159,6 +190,38 @@ function Main({ pageTitle }) {
                                                 const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
                                                 const perk = item.perks[perkIndex];
                                                 return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
+                                            } else if (col === "rating") {
+                                                return (
+                                                    <td key={colIndex}>
+                                                        <select
+                                                            value={item.rating || 0}
+                                                            onChange={async (e) => {
+                                                                const newRating = e.target.value;
+                                                                try {
+                                                                    const response = await fetch(
+                                                                        `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor/${item.id}/rating?rating=${newRating}`,
+                                                                        {
+                                                                            method: "PATCH",
+                                                                            //headers: { "Content-Type": "application/json" },
+                                                                            //body: JSON.stringify({ rating: newRating })
+                                                                        }
+                                                                    );
+                                                                    const result = await response.json();
+                                                                    if (result.status === "SUCCESS") {
+                                                                        setReloadSurvivorBuildTable(prev => !prev);
+                                                                    }
+                                                                } catch (error) {
+                                                                    console.error("Ошибка при обновлении рейтинга:", error);
+                                                                }
+                                                            }}
+                                                        >
+                                                            <option value={0}>0</option>
+                                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                                                                <option key={num} value={num}>{num}</option>
+                                                            ))}
+                                                        </select>
+                                                    </td>
+                                                );
                                             } else if (col.startsWith("favorite")) {
                                                 return (
                                                     <td key={colIndex}>

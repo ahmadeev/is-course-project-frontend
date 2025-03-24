@@ -69,7 +69,7 @@ const DynamicDataTable = ({
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
-                setTableReloadParentState(false);
+                // setTableReloadParentState(false); // TODO: пока не очень понятно но ладно
                 setIsLoading(false);
             }
         };

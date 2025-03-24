@@ -5,7 +5,9 @@ const DataContext = createContext();
 export const DataProvider = ({ children }) => {
     // ------
     const [dlc, setDlc] = useState(null);
+
     const [isDlcLoaded, setDlcLoaded] = useState(false);
+
     const DLC_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/dlc";
 
     const [survivorPerks, setSurvivorPerks] = useState([]);
@@ -14,13 +16,22 @@ export const DataProvider = ({ children }) => {
     const [favoriteSurvivorBuilds, setFavoriteSurvivorBuilds] = useState([]);
     const [favoriteKillerBuilds, setFavoriteKillerBuilds] = useState([]);
 
-    const [favoriteSurvivorBuildIds, setFavoriteSurvivorBuildIds] = useState([]);
-    const [favoriteKillerBuildIds, setFavoriteKillerBuildIds] = useState([]);
-
     const [isFavoriteLoaded, setIsFavoriteLoaded] = useState(false);
+
     const FAVORITE_SURVIVOR_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor";
     const FAVORITE_KILLER_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer";
+
+    const [favoriteSurvivorBuildIds, setFavoriteSurvivorBuildIds] = useState([]);
+    const [favoriteKillerBuildIds, setFavoriteKillerBuildIds] = useState([]);
     // ------
+    const [ratedSurvivorBuilds, setRatedSurvivorBuilds] = useState([]);
+    const [ratedKillerBuilds, setRatedKillerBuilds] = useState([]);
+
+    const [isRatedLoaded, setIsRatedLoaded] = useState(false);
+
+    const RATED_SURVIVOR_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor";
+    const RATED_KILLER_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer";
+
 
     useEffect(() => {
         console.log(favoriteKillerBuildIds);
@@ -91,11 +102,40 @@ export const DataProvider = ({ children }) => {
         if (!isFavoriteLoaded) fetchFavoriteBuilds();
     }, [isFavoriteLoaded]);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [survivorResponse, killerResponse] = await Promise.all([
+                    fetch(RATED_SURVIVOR_BUILDS_URL).then(res => res.json()),
+                    fetch(RATED_KILLER_BUILDS_URL).then(res => res.json())
+                ]);
+
+                if (survivorResponse.status !== 'SUCCESS') throw new Error('Survivor fetch failed');
+                if (killerResponse.status !== 'SUCCESS') throw new Error('Killer fetch failed');
+
+                const survivorBuilds = Array.isArray(survivorResponse.data) ? survivorResponse.data : [];
+                const killerBuilds = Array.isArray(killerResponse.data) ? killerResponse.data : [];
+
+                setFavoriteSurvivorBuilds(survivorBuilds);
+                setFavoriteKillerBuilds(killerBuilds);
+            } catch (error) {
+                console.error('Error fetching rated builds:', error);
+                setRatedKillerBuilds([]);
+                setRatedSurvivorBuilds([]);
+            } finally {
+                setIsRatedLoaded(true);
+            }
+        }
+
+        if(!isRatedLoaded) fetchData();
+    }, [isRatedLoaded]);
+
     return (
         <DataContext.Provider value={{
             dlc,
             survivorPerks, killerPerks,
-            favoriteSurvivorBuildIds, setFavoriteSurvivorBuildIds, favoriteKillerBuildIds, setFavoriteKillerBuildIds, setIsFavoriteLoaded
+            favoriteSurvivorBuildIds, setFavoriteSurvivorBuildIds, favoriteKillerBuildIds, setFavoriteKillerBuildIds, setIsFavoriteLoaded,
+            ratedSurvivorBuilds, ratedKillerBuilds, isRatedLoaded, setIsRatedLoaded
         }}>
             {children}
         </DataContext.Provider>
