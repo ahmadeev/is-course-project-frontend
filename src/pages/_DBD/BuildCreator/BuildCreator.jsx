@@ -43,9 +43,7 @@ const BuildCreator = () => {
                         </div>
                     ))}
                 </div>
-                {selectedPerks.length < 4 && (
-                    <button onClick={() => setModalIsOpen(true)}>Выбрать перк</button>
-                )}
+                <button onClick={() => setModalIsOpen(true)}>Выбрать перк</button>
                 <Modal
                     active={modalIsOpen}
                     setActive={setModalIsOpen}

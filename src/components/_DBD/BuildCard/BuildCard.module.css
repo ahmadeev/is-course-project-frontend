@@ -1,0 +1,86 @@
+.build_card {
+    background-color: #f5f5f5; /* Светлый фон, чуть темнее белого */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Более мягкая тень */
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    color: #686C5E; /* Основной цвет текста с главной */
+    font-family: 'Arial', sans-serif;
+}
+
+/* Заголовок карточки */
+.card_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card_header h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #A0522D; /* Теплый коричнево-красный акцент */
+}
+
+.build_meta {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+}
+
+.usage_count, .rating {
+    background-color: #E8E8E8; /* Светло-серый фон */
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: #686C5E;
+}
+
+.approval_status {
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.approval_status.approved {
+    background-color: #6B8E23; /* Оливковый зеленый для одобренных */
+    color: #ffffff; /* Белый текст для контраста */
+}
+
+.approval_status.not-approved {
+    background-color: #CD5C5C; /* Индийский красный для неодобренных */
+    color: #ffffff; /* Белый текст для контраста */
+}
+
+/* Контейнер для перков */
+.perks_container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Элемент перка */
+.perk_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+}
+
+.perk_image {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    border: 2px solid #A0522D; /* Теплый коричнево-красный для рамки */
+    object-fit: cover;
+    margin-bottom: 8px;
+}
+
+.perk_name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #8A8F7F; /* Чуть более светлый оттенок для названий перков */
+    max-width: 100px;
+    word-wrap: break-word;
+}
