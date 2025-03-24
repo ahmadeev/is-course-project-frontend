@@ -15,3 +15,65 @@
     height: auto;
     margin-top: 10vh;           /* для фиксированного navbar */
 }
+
+/* Стили для контейнера уже заданы в .wrapper, поэтому их не трогаем */
+
+/* Заголовок */
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #A0522D; /* Теплый коричнево-красный акцент, как в PerkSelector */
+    margin-bottom: 20px;
+}
+
+/* Контейнер для выбранных перков */
+.selectedPerks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Элемент перка */
+.perkItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 80px;
+}
+
+.perkItem img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    border: 2px solid #A0522D; /* Такой же акцент, как в PerkSelector */
+    margin-bottom: 5px;
+}
+
+.perkItem p {
+    margin: 0;
+    font-size: 12px;
+    color: #686C5E; /* Цвет текста с главной страницы */
+    word-wrap: break-word;
+    max-width: 80px;
+}
+
+/* Кнопка "Выбрать перк" */
+.selectButton {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+    background-color: #A0522D; /* Теплый коричнево-красный */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.selectButton:hover {
+    background-color: #8B4513; /* Более темный оттенок для hover */
+}
