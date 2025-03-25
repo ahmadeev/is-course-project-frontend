@@ -4,7 +4,7 @@ import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {useAuth} from "../utils/AuthProvider.jsx";
 
 function Navbar() {
-    const { isAuthenticated, username, logout } = useAuth();
+    const { isAuthenticated, username, logout, hasRole } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.pathname || "/"
@@ -21,11 +21,13 @@ function Navbar() {
         <>
             <nav className={styles.navbar}> {/* можно оставить без className, но в css правило для блока nav */}
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/">home</NavLink>
-                <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/admin">admin</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/main">main</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/add-match">add match</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/generate-build">generate build</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/id">id</NavLink>
+                {
+                    hasRole("ROLE_ADMIN") &&  <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/admin">admin</NavLink>
+                }
 
                 <div style={div_style}>
                     {

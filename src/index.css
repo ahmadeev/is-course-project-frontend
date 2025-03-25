@@ -10,6 +10,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* переменные */
+  --primary-color: #A0522D;
+  --hover-color: #8B4513;
 }
 
 body {

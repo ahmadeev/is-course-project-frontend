@@ -23,7 +23,7 @@
     font-size: 1.5rem;
     color: #333;
     margin-bottom: 10px;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid var(--primary-color);
     padding-bottom: 5px;
 }
 
@@ -46,7 +46,7 @@
 
 .sectionTitle {
     font-size: 1.2rem;
-    color: #007bff;
+    color: var(--primary-color);
     margin-bottom: 8px;
 }
 
@@ -61,14 +61,14 @@
 }
 
 .link {
-    color: #007bff;
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
 }
 
 .link:hover {
-    color: #0056b3;
+    color: var(--hover-color);
     text-decoration: underline;
 }
 

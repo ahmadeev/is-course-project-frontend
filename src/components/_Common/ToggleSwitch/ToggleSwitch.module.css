@@ -19,11 +19,12 @@
 }
 
 .toggleOption:hover {
-    color: #1f2937;
+    color: #f0f2f5;
+    background-color: var(--hover-color);
 }
 
 .toggleOption.active {
-    background-color: #3b82f6;
+    background-color: var(--primary-color);
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

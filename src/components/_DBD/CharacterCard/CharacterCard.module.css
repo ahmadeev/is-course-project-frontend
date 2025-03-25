@@ -46,6 +46,6 @@
 
 .perksTitle {
     font-size: 1.25rem;
-    color: #007bff;
+    color: var(--primary-color);
     margin-bottom: 10px;
 }

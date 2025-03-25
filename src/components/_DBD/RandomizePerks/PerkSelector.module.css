@@ -58,7 +58,7 @@
     width: 50px;
     height: 50px;
     border-radius: 8px;
-    border: 2px solid #A0522D;
+    border: 2px solid var(--primary-color);
     margin-bottom: 5px;
 }
 
@@ -92,7 +92,7 @@
     width: 100%;
     padding: 10px;
     margin-top: 15px;
-    background-color: #A0522D; /* Теплый коричнево-красный */
+    background-color: var(--primary-color); /* Теплый коричнево-красный */
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -108,5 +108,5 @@
 }
 
 .confirmButton:hover:not(:disabled) {
-    background-color: #8B4513; /* Более темный оттенок для hover */
+    background-color: var(--hover-color); /* Более темный оттенок для hover */
 }
