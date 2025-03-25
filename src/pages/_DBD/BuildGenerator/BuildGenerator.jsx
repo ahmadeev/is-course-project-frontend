@@ -28,7 +28,9 @@ const BuildCreator = () => {
                     selected={characterState}
                     onChange={setCharacterState}
                 />
-                <button onClick={() => {
+                <button
+                    className={style.selectButton}
+                    onClick={() => {
                     fetch(
                         `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/${characterState}/random`,
                         {method: "GET"}
@@ -41,7 +43,7 @@ const BuildCreator = () => {
                         .catch((error) => {
                             console.error(error);
                         })
-                }}>generate</button>
+                }}>Сгенерировать</button>
             </div>
         </>
     );

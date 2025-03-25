@@ -15,3 +15,22 @@
     height: auto;
     margin-top: 10vh;           /* для фиксированного navbar */
 }
+
+/* Кнопка "Выбрать перк" */
+.selectButton {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+    background-color: var(--primary-color); /* Теплый коричнево-красный */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.selectButton:hover {
+    background-color: var(--hover-color); /* Более темный оттенок для hover */
+}
