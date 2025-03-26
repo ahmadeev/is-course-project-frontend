@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Modal from "../../../components/_Common/Modal/Modal.jsx";
 import PerkSelector from "../../../components/_DBD/RandomizePerks/PerkSelector.jsx";
-import styles from "./BuildCreator.module.css";
+import styles from "./MatchCreator.module.css";
 import { useData } from "../../../components/_DBD/utils/DataProvider.jsx";
 import Navbar from "../../../components/_DBD/Navbar/Navbar.jsx";
 import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
 
-const BuildCreator = () => {
+const MatchCreator = () => {
     const [selectedPerks, setSelectedPerks] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -18,12 +18,13 @@ const BuildCreator = () => {
     const { killerPerks, survivorPerks } = useData();
 
     const [characterState, setCharacterState] = useState("killer");
+    const [resultState, setResultState] = useState("win");
 
     return (
         <>
             <Navbar />
             <div className={styles.wrapper}>
-                <h1 className={styles.title}>Создание билда</h1>
+                <h1 className={styles.title}>Добавление матча</h1>
                 <ToggleSwitch
                     options={[
                         {label: "Killer", value: "killer"},
@@ -31,6 +32,14 @@ const BuildCreator = () => {
                     ]}
                     selected={characterState}
                     onChange={setCharacterState}
+                />
+                <ToggleSwitch
+                    options={[
+                        {label: "Win", value: "win"},
+                        {label: "Loss", value: "loss"}
+                    ]}
+                    selected={resultState}
+                    onChange={setResultState}
                 />
                 <div className={styles.selectedPerks}>
                     {selectedPerks.map(perk => (
@@ -49,12 +58,12 @@ const BuildCreator = () => {
                 <button
                     className={styles.selectButton}
                     onClick={() => {
-                        fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/${characterState}`, {
+                        fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/match/${characterState}`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({id: -1, perks: selectedPerks}) // TODO: id -- костыль (long -> Long)
+                            body: JSON.stringify({build: {perks: selectedPerks, id: -1}, won: resultState === "win"}) // TODO: id -- костыль (long -> Long)
                         })
                             .then((res) => res.json())
                             .then((result) => {
@@ -84,4 +93,4 @@ const BuildCreator = () => {
     );
 };
 
-export default BuildCreator;
+export default MatchCreator;

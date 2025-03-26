@@ -29,8 +29,8 @@ export const DataProvider = ({ children }) => {
 
     const [isRatedLoaded, setIsRatedLoaded] = useState(false);
 
-    const RATED_SURVIVOR_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor";
-    const RATED_KILLER_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer";
+    const RATED_SURVIVOR_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor/rating";
+    const RATED_KILLER_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer/rating";
 
 
     useEffect(() => {
