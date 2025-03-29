@@ -1,0 +1,62 @@
+.dropdownContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdownButton {
+    display: flex;
+    align-items: center;
+    width: 200px;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.dropdownButton:hover {
+    background-color: var(--hover-color);
+}
+
+/* Левая область - стрелка */
+.arrow {
+    margin-right: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Правая область - текст */
+.text {
+    flex: 1;
+    cursor: pointer;
+}
+
+/* Выпадающее меню */
+.dropdownMenu {
+    position: absolute;
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    padding: 0;
+    list-style: none;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.dropdownItem {
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.dropdownItem:hover {
+    background-color: var(--hover-color);
+    color: white;
+}
