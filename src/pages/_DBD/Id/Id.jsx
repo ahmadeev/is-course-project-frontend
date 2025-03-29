@@ -350,7 +350,6 @@ function Id({ pageTitle }) {
                                     key={item.id || rowIndex}
                                 >
                                     {columns.map((col, colIndex) => {
-                                        console.log(item)
                                         if (col.startsWith("perk")) {
                                             const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
                                             const perk = item.build.perks[perkIndex];
@@ -381,7 +380,6 @@ function Id({ pageTitle }) {
                                     key={item.id || rowIndex}
                                 >
                                     {columns.map((col, colIndex) => {
-                                        console.log(item)
                                         if (col.startsWith("perk")) {
                                             const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
                                             const perk = item.build.perks[perkIndex];
