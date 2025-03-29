@@ -1,0 +1,30 @@
+.tag_list {
+    display: flex;
+    flex-wrap: wrap; /* Перенос тегов на следующую строку, если не помещаются */
+    gap: 8px; /* Расстояние между тегами */
+}
+
+.tag {
+    display: flex;
+    align-items: center;
+    background-color: #e0e0e0; /* Светло-серый фон */
+    border-radius: 16px; /* Закругленные углы */
+    padding: 4px 8px; /* Внутренние отступы */
+    font-size: 14px;
+}
+
+.tag_count {
+    background-color: #4caf50; /* Зеленый фон для числа */
+    color: white;
+    border-radius: 50%; /* Круглый фон для числа */
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 6px; /* Отступ справа от числа */
+}
+
+.tag_text {
+    color: #333; /* Цвет текста тега */
+}

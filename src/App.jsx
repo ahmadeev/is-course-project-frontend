@@ -13,6 +13,7 @@ import CharacterPage from "./pages/_DBD/CharacterPage/CharacterPage.jsx";
 import MatchCreator from "./pages/_DBD/MatchCreator/MatchCreator.jsx";
 import BuildGenerator from "./pages/_DBD/BuildGenerator/BuildGenerator.jsx";
 import Id from "./pages/_DBD/Id/Id.jsx";
+import DiceRollerPage from "./pages/_DBD/DiceRollerPage/DiceRollerPage.jsx";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -35,6 +36,7 @@ function App() {
                       <Route path="/character/:text" element={<CharacterPage pageTitle="Персонаж" />} />
                       <Route path="/add-match" element={<MatchCreator />} />
                       <Route path="/generate-build" element={<BuildGenerator />} />
+                      <Route path="/roll-dice" element={<DiceRollerPage />} />
                       <Route path="/id" element={<Id />} />
                   </Routes>
               </HashRouter>

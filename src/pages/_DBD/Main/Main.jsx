@@ -6,6 +6,10 @@ import DynamicDataTable from "../../../components/_DBD/Table/DynamicDataTable.js
 import {crudCreate, crudDelete, crudReadMany} from "../../../utils/crud.js";
 import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
 import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
+import PerkSelector from "../../../components/_DBD/RandomizePerks/PerkSelector.jsx";
+import Modal from "../../../components/_Common/Modal/Modal.jsx";
+import TagList from "../../../components/_DBD/TagList/TagList.jsx";
+import DiceRoller from "../../../components/_DBD/DiceRoller/DiceRoller.jsx";
 
 function Main({ pageTitle }) {
 
@@ -26,6 +30,34 @@ function Main({ pageTitle }) {
 
     const [reloadKillerBuildTable, setReloadKillerBuildTable] = useState(false);
     const [reloadSurvivorBuildTable, setReloadSurvivorBuildTable] = useState(false);
+
+    const [isBuildTagModalOpen, setIsBuildTagModalOpen] = useState(false);
+    const [currentBuild, setCurrentBuild] = useState(null);
+    const [currentBuildData, setCurrentBuildData] = useState(null);
+    const [currentBuildTagInput, setCurrentBuildTagInput] = useState("");
+    const [isTagListReloaded, setIsTagListReloaded] = useState(true);
+
+    const rowOnClick = (item) => {
+        setCurrentBuild(item);
+        setIsBuildTagModalOpen(true);
+    }
+
+    useEffect(() => {
+        if (currentBuild === null) return;
+        const fetchData = async () => {
+            await fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/tag/build/${characterState}?build=${currentBuild.id}`, {
+                method: "GET",
+            })
+                .then((res) => res.json())
+                .then((result) => {
+                    setCurrentBuildData(result.data);
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
+        fetchData();
+    }, [currentBuild, isTagListReloaded]);
 
     return (
         <>
@@ -90,7 +122,12 @@ function Main({ pageTitle }) {
                                 let columns= ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"];
 
                                 return (
-                                    <tr key={item.id || rowIndex}>
+                                    <tr
+                                        onClick={() => {
+                                            rowOnClick(item);
+                                        }}
+                                        key={item.id || rowIndex}
+                                    >
                                         {columns.map((col, colIndex) => {
                                             if (col.startsWith("perk")) {
                                                 const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
@@ -98,9 +135,17 @@ function Main({ pageTitle }) {
                                                 return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
                                             } else if (col === "rating") {
                                                 return (
-                                                    <td key={colIndex}>
+                                                    <td
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                        }}
+                                                        key={colIndex}
+                                                    >
                                                         <select
                                                             value={item.rating || 0}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                            }}
                                                             onChange={async (e) => {
                                                                 const newRating = e.target.value;
                                                                 try {
@@ -129,11 +174,17 @@ function Main({ pageTitle }) {
                                                     </td>
                                                 )} else if (col === "approvedByAdmin") {
                                                     return (
-                                                        <td key={colIndex}>
+                                                        <td
+                                                            onClick={(e) => {
+                                                                if (hasRole("ROLE_ADMIN")) e.stopPropagation();
+                                                            }}
+                                                            key={colIndex}
+                                                        >
                                                             {
                                                                 hasRole("ROLE_ADMIN") && (
                                                                     <input type="checkbox" checked={item.approvedByAdmin}
-                                                                           onChange={async () => {
+                                                                           onChange={async (e) => {
+                                                                               e.stopPropagation();
                                                                                const response = await fetch(
                                                                                    `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer/${item.id}/approve?approved=${!item.approvedByAdmin}`,
                                                                                    {method: "PUT"}
@@ -156,10 +207,16 @@ function Main({ pageTitle }) {
                                                     )
                                             } else if (col.startsWith("favorite")) {
                                                 return (
-                                                    <td key={colIndex}>
+                                                    <td
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                        }}
+                                                        key={colIndex}
+                                                    >
                                                         <button
                                                             className={favoriteKillerBuildIds?.includes(Number(item.id)) ? styles.inFavorite : styles.notInFavorite}
-                                                            onClick={async () => {
+                                                            onClick={async (e) => {
+                                                                e.stopPropagation();
                                                                 const isAboutToAdd = !favoriteKillerBuildIds?.includes(Number(item.id));
                                                                 try {
                                                                     if (isAboutToAdd) {
@@ -210,11 +267,17 @@ function Main({ pageTitle }) {
                             tableReloadParentState={reloadSurvivorBuildTable}
                             setTableReloadParentState={setReloadSurvivorBuildTable}
                             columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"]}
+
                             renderRow={(item, rowIndex) => {
                                 let columns = ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"];
 
                                 return (
-                                    <tr key={item.id || rowIndex}>
+                                    <tr
+                                        onClick={() => {
+                                            rowOnClick(item);
+                                        }}
+                                        key={item.id || rowIndex}
+                                    >
                                         {columns.map((col, colIndex) => {
                                             if (col.startsWith("perk")) {
                                                 const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
@@ -222,9 +285,17 @@ function Main({ pageTitle }) {
                                                 return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
                                             } else if (col === "rating") {
                                                 return (
-                                                    <td key={colIndex}>
+                                                    <td
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                        }}
+                                                        key={colIndex}
+                                                    >
                                                         <select
                                                             value={item.rating || 0}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                            }}
                                                             onChange={async (e) => {
                                                                 const newRating = e.target.value;
                                                                 try {
@@ -254,11 +325,17 @@ function Main({ pageTitle }) {
                                                 );
                                             } else if (col === "approvedByAdmin") {
                                                 return (
-                                                    <td key={colIndex}>
+                                                    <td
+                                                        onClick={(e) => {
+                                                            if (hasRole("ROLE_ADMIN")) e.stopPropagation();
+                                                        }}
+                                                        key={colIndex}
+                                                    >
                                                         {
                                                             hasRole("ROLE_ADMIN") && (
                                                                 <input type="checkbox" checked={item.approvedByAdmin}
-                                                                       onChange={async () => {
+                                                                       onChange={async (e) => {
+                                                                           e.stopPropagation();
                                                                            const response = await fetch(
                                                                                `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor/${item.id}/approve?approved=${!item.approvedByAdmin}`,
                                                                                {method: "PUT"}
@@ -280,10 +357,16 @@ function Main({ pageTitle }) {
                                                 )
                                             } else if (col.startsWith("favorite")) {
                                                 return (
-                                                    <td key={colIndex}>
+                                                    <td
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                        }}
+                                                        key={colIndex}
+                                                    >
                                                         <button
                                                             className={favoriteSurvivorBuildIds?.includes(Number(item.id)) ? styles.inFavorite : styles.notInFavorite}
-                                                            onClick={async () => {
+                                                            onClick={async (e) => {
+                                                                e.stopPropagation();
                                                                 const isAboutToAdd = !favoriteSurvivorBuildIds?.includes(Number(item.id));
                                                                 try {
                                                                     if (isAboutToAdd) {
@@ -324,6 +407,74 @@ function Main({ pageTitle }) {
                         ></DynamicDataTable>
                     </>
                 )}
+
+
+                <Modal
+                    active={isBuildTagModalOpen}
+                    setActive={setIsBuildTagModalOpen}
+                >
+                    <h2>Комментарии</h2>
+
+                    {
+                        // TODO: оптимистичное обновление для тегов можно сделать
+                        currentBuildData && (
+                            <TagList
+                                tagsData={currentBuildData}
+                                onTagClick={(tag) => {
+                                    fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/tag/build/${characterState}`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify({build: {id: currentBuild.id}, tag: tag}),
+                                    })
+                                        .then((res) => res.json())
+                                        .then((result) => {
+                                            setIsTagListReloaded(prev => !prev);
+                                        })
+                                        .catch((error) => {
+                                            console.error(error);
+                                        })
+                                }}
+                            />
+                        )
+                    }
+                    {/* глюк с этой строчкой ниже при повторном клике */}
+                    {
+                        !currentBuildData && <p>Данные отсутствуют!</p>
+                    }
+                    {
+                        currentBuildData !== null && currentBuildData.length === 0 && <p>Комментарии отсутствуют!</p>
+                    }
+                    {
+                        currentBuildData && (
+                            <>
+                                <input type="text" placeholder="от 3 до 10 символов" onChange={(e) => {
+                                    setCurrentBuildTagInput(e.target.value);
+                                }} />
+                                <button onClick={() => {
+                                    fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/tag/build/${characterState}`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify({build: {id: currentBuild.id}, tag: currentBuildTagInput}),
+                                    })
+                                        .then((res) => res.json())
+                                        .then((result) => {
+                                            setIsTagListReloaded(prev => !prev);
+                                        })
+                                        .catch((error) => {
+                                            console.error(error);
+                                        })
+                                }}>Отправить</button>
+                                <br/>
+                            </>
+                        )
+                    }
+
+                    <button onClick={() => setIsBuildTagModalOpen(false)}>Закрыть</button>
+                </Modal>
 
             </div>
         </>

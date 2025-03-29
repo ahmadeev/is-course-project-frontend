@@ -24,6 +24,7 @@ function Navbar() {
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/main">main</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/add-match">add match</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/generate-build">generate build</NavLink>
+                <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/roll-dice">roll dice</NavLink>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/id">id</NavLink>
                 {
                     hasRole("ROLE_ADMIN") &&  <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/admin">admin</NavLink>
