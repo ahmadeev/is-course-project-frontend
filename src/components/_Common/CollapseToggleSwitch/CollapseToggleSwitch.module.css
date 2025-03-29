@@ -1,0 +1,23 @@
+.toggleButton {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.toggleButton.open {
+    transform: rotate(180deg);
+}
+
+.toggleButton:hover {
+    background-color: var(--hover-color);
+}

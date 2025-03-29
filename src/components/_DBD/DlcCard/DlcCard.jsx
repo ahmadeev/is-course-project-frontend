@@ -63,8 +63,6 @@ const DlcCard = ({ dlc }) => {
 
 // Компонент списка карточек
 const DlcList = ({ data }) => {
-    if (!data || data.length === 0) return <p>Загрузка...</p>;
-
     return (
         <div className={styles.listContainer}>
             {data && data.map((dlc, index) => (

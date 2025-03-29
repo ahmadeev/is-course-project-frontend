@@ -6,6 +6,7 @@ import {crudReadMany} from "../../../utils/crud.js";
 import {useData} from "../../../components/_DBD/utils/DataProvider.jsx";
 import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
 import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
+import CollapseToggleSwitch from "../../../components/_Common/CollapseToggleSwitch/CollapseToggleSwitch.jsx";
 
 function Id({ pageTitle }) {
 
@@ -14,8 +15,7 @@ function Id({ pageTitle }) {
     })
 
     const [foldFavorites, setFoldFavorites] = useState(true);
-    const [characterState, setCharacterState] = useState("killer");
-
+    const [favoriteCharacterState, setFavoriteCharacterState] = useState("killer");
     // ------
     const { favoriteKillerBuildIds, favoriteSurvivorBuildIds, setFavoriteKillerBuildIds, setFavoriteSurvivorBuildIds, setIsFavoriteLoaded } = useData();
 
@@ -24,35 +24,47 @@ function Id({ pageTitle }) {
 
     const { hasRole } = useAuth();
     // ------
+    const [foldMatches, setFoldMatches] = useState(true);
+    const [matchCharacterState, setMatchCharacterState] = useState("killer");
+    // ------
+    const [reloadKillerMatchTable, setReloadKillerMatchTable] = useState(false);
+    const [reloadSurvivorMatchTable, setReloadSurvivorMatchTable] = useState(false);
+    // ------
 
     return (
         <>
             <Navbar/>
             <div className={styles.wrapper}>
 
-                <ToggleSwitch
+                {/*                <ToggleSwitch
                     options={[
                         {label: "Fold", value: true},
                         {label: "Unfold", value: false}
                     ]}
                     selected={foldFavorites}
                     onChange={setFoldFavorites}
-                />
+                />*/}
 
-                <ToggleSwitch
-                    options={[
-                        {label: "Killer", value: "killer"},
-                        {label: "Survivor", value: "survivor"}
-                    ]}
-                    selected={characterState}
-                    onChange={setCharacterState}
-                />
+                <div className={styles.switch_container}>
+                    <CollapseToggleSwitch
+                        isOpen={foldFavorites}
+                        onToggle={() => setFoldFavorites(!foldFavorites)}
+                    />
+                    <ToggleSwitch
+                        options={[
+                            {label: "Killer", value: "killer"},
+                            {label: "Survivor", value: "survivor"}
+                        ]}
+                        selected={favoriteCharacterState}
+                        onChange={setFavoriteCharacterState}
+                    />
+                </div>
 
                 {/*
                     TODO: удалять из таблицы после удаления из избранного, сделать стили.
                     TODO: таблица отличается только урлами от родительской
                 */}
-                {!foldFavorites && characterState === "killer" && (
+                {!foldFavorites && favoriteCharacterState === "killer" && (
                     <>
                         {/* killer build table */}
                         <DynamicDataTable
@@ -63,7 +75,7 @@ function Id({ pageTitle }) {
                             columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"]}
 
                             renderRow={(item, rowIndex) => {
-                                let columns= ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"];
+                                let columns = ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"];
 
                                 return (
                                     <tr key={item.id || rowIndex}>
@@ -103,7 +115,8 @@ function Id({ pageTitle }) {
                                                             ))}
                                                         </select>
                                                     </td>
-                                                )} else if (col === "approvedByAdmin") {
+                                                )
+                                            } else if (col === "approvedByAdmin") {
                                                 return (
                                                     <td key={colIndex}>
                                                         {
@@ -162,7 +175,9 @@ function Id({ pageTitle }) {
                                                                     setIsFavoriteLoaded(false); // рефетч в глобальном компоненте при ошибке
                                                                 }
                                                             }}
-                                                        >{favoriteKillerBuildIds?.includes(item.id) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>}
+                                                        >{favoriteKillerBuildIds?.includes(item.id) ?
+                                                            <i className="fas fa-heart"></i> :
+                                                            <i className="far fa-heart"></i>}
                                                         </button>
                                                     </td>
                                                 );
@@ -177,7 +192,7 @@ function Id({ pageTitle }) {
                     </>
                 )}
 
-                {!foldFavorites && characterState === "survivor" && (
+                {!foldFavorites && favoriteCharacterState === "survivor" && (
                     <>
                         {/* survivor build table */}
                         <DynamicDataTable
@@ -287,7 +302,9 @@ function Id({ pageTitle }) {
                                                                     setIsFavoriteLoaded(false); // рефетч при ошибке
                                                                 }
                                                             }}
-                                                        >{favoriteSurvivorBuildIds?.includes(item.id) ? <i className="fas fa-heart"></i> : <i className="far fa-heart"></i>}
+                                                        >{favoriteSurvivorBuildIds?.includes(item.id) ?
+                                                            <i className="fas fa-heart"></i> :
+                                                            <i className="far fa-heart"></i>}
                                                         </button>
                                                     </td>
                                                 );
@@ -301,6 +318,84 @@ function Id({ pageTitle }) {
                         ></DynamicDataTable>
                     </>
                 )}
+
+                <div className={styles.switch_container}>
+                    <CollapseToggleSwitch
+                        isOpen={foldMatches}
+                        onToggle={() => setFoldMatches(!foldMatches)}
+                    />
+                    <ToggleSwitch
+                        options={[
+                            {label: "Killer", value: "killer"},
+                            {label: "Survivor", value: "survivor"}
+                        ]}
+                        selected={matchCharacterState}
+                        onChange={setMatchCharacterState}
+                    />
+                </div>
+
+                {!foldMatches && matchCharacterState === "survivor" && (
+                    <DynamicDataTable
+                        fetchData={crudReadMany}
+                        baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/match/survivor"
+                        tableReloadParentState={reloadSurvivorMatchTable}
+                        setTableReloadParentState={setReloadSurvivorMatchTable}
+                        columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "won", "createdAt"]}
+
+                        renderRow={(item, rowIndex) => {
+                            let columns= ["id", "perk 1", "perk 2", "perk 3", "perk 4", "won", "createdAt"];
+
+                            return (
+                                <tr
+                                    key={item.id || rowIndex}
+                                >
+                                    {columns.map((col, colIndex) => {
+                                        console.log(item)
+                                        if (col.startsWith("perk")) {
+                                            const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
+                                            const perk = item.build.perks[perkIndex];
+                                            return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
+                                        } else {
+                                            return <td key={colIndex}>{"" + item[col]}</td>;
+                                        }
+                                    })}
+                                </tr>
+                            )
+                        }}
+                    ></DynamicDataTable>
+                )}
+
+                {!foldMatches && matchCharacterState === "killer" && (
+                    <DynamicDataTable
+                        fetchData={crudReadMany}
+                        baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/match/killer"
+                        tableReloadParentState={reloadKillerMatchTable}
+                        setTableReloadParentState={setReloadKillerMatchTable}
+                        columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "won", "createdAt"]}
+
+                        renderRow={(item, rowIndex) => {
+                            let columns= ["id", "perk 1", "perk 2", "perk 3", "perk 4", "won", "createdAt"];
+
+                            return (
+                                <tr
+                                    key={item.id || rowIndex}
+                                >
+                                    {columns.map((col, colIndex) => {
+                                        console.log(item)
+                                        if (col.startsWith("perk")) {
+                                            const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
+                                            const perk = item.build.perks[perkIndex];
+                                            return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
+                                        } else {
+                                            return <td key={colIndex}>{"" + item[col]}</td>;
+                                        }
+                                    })}
+                                </tr>
+                            )
+                        }}
+                    ></DynamicDataTable>
+                )}
+
             </div>
         </>
 

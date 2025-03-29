@@ -6,10 +6,8 @@ import DynamicDataTable from "../../../components/_DBD/Table/DynamicDataTable.js
 import {crudCreate, crudDelete, crudReadMany} from "../../../utils/crud.js";
 import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
 import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
-import PerkSelector from "../../../components/_DBD/RandomizePerks/PerkSelector.jsx";
 import Modal from "../../../components/_Common/Modal/Modal.jsx";
 import TagList from "../../../components/_DBD/TagList/TagList.jsx";
-import DiceRoller from "../../../components/_DBD/DiceRoller/DiceRoller.jsx";
 
 function Main({ pageTitle }) {
 

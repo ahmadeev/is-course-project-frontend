@@ -101,7 +101,8 @@ const DynamicDataTable = ({
         <>
             <h1>Таблица данных</h1>
 
-            <div className={styles.filter_block}>
+            {/* TODO: временная мера, пока фильтрация и сортировка отсутствуют */}
+{/*            <div className={styles.filter_block}>
                 <div className={styles.filter_block_section}>
                     <label>
                         Filter by column:
@@ -109,7 +110,7 @@ const DynamicDataTable = ({
                             <option value="" disabled>Select an option</option>
                             {columns && columns.map((col, index) => (
                                 <option key={index} value={col}>
-                                    {columnLabels?.[col] || col} {/* Используем читаемое имя или само имя колонки */}
+                                    {columnLabels?.[col] || col}
                                 </option>
                             ))}
                         </select>
@@ -144,7 +145,7 @@ const DynamicDataTable = ({
                 </div>
                 <button onClick={handleFindEvent}>Find</button>
                 <button onClick={handleResetEvent}>Reset</button>
-            </div>
+            </div>*/}
 
             <div className={styles.table_wrapper}>
                 <table className={styles.data_table}>
@@ -193,28 +194,28 @@ const DynamicDataTable = ({
                     className={styles.turn_page}
                     onClick={() => setPage(0)}
                     disabled={page === 0}
-                >влево2</button>
+                >&lt;&lt;</button>
                 <button
                     className={styles.turn_page}
                     onClick={() => handlePageChange(-1)}
                     disabled={page === 0}
-                >влево</button>
+                >&lt;</button>
                 <p>{page + 1}</p>
                 <button
                     className={styles.turn_page}
                     onClick={() => handlePageChange(1)}
                     disabled={data?.length > size ? data?.slice(page * size, page * size + size)?.length < size : data?.length < size}
-                >вправо</button>
+                >&gt;</button>
                 <button
                     className={styles.turn_page}
                     disabled={true}
-                >вправо2</button>
+                >&gt;&gt;</button>
             </div>
 
             <div className={styles.button_block}>
-                <a onClick={() => setSize(10)}>10</a>
-                <a onClick={() => setSize(50)}>50</a>
-                <a onClick={() => setSize(100)}>100</a>
+                <a style={{textDecoration: size === 10 ? "underline" : ""}} onClick={() => setSize(10)}>10</a>
+                <a style={{textDecoration: size === 50 ? "underline" : ""}} onClick={() => setSize(50)}>50</a>
+                <a style={{textDecoration: size === 100 ? "underline" : ""}} onClick={() => setSize(100)}>100</a>
             </div>
         </>
     );

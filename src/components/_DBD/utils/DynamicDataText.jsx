@@ -24,6 +24,7 @@ const DynamicDataText = ({
     const [data, setData] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         const loadData = async () => {
@@ -39,6 +40,7 @@ const DynamicDataText = ({
                 const responseData = await response.json();
                 setData(responseData.data);
             } catch (error) {
+                setErrorMessage(error.message);
                 console.error("Error fetching data:", error);
             } finally {
                 setContentReloadParentState(false);
@@ -73,6 +75,12 @@ const DynamicDataText = ({
     return (
         <>
             {isLoading && <p>Загрузка данных...</p>}
+            {!isLoading && data.length === 0 && (
+                <>
+                    <p>Данные отсутствуют.</p>
+                    {errorMessage && <p>{errorMessage}</p>}
+                </>
+            )}
             {!isLoading && <DynamicDataTextModule data={data}/>}
         </>
     );
