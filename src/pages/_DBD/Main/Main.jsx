@@ -10,7 +10,8 @@ import Modal from "../../../components/_Common/Modal/Modal.jsx";
 import TagList from "../../../components/_DBD/TagList/TagList.jsx";
 
 function Main({ pageTitle }) {
-    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    const { BASE_URL } = useData();
 
     useEffect(() => {
         document.title = pageTitle;

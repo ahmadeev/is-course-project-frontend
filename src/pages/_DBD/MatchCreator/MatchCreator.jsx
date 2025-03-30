@@ -7,7 +7,8 @@ import Navbar from "../../../components/_DBD/Navbar/Navbar.jsx";
 import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
 
 const MatchCreator = () => {
-    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    const { BASE_URL } = useData();
 
     const [selectedPerks, setSelectedPerks] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);

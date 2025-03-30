@@ -9,7 +9,8 @@ import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
 import CollapseToggleSwitch from "../../../components/_Common/CollapseToggleSwitch/CollapseToggleSwitch.jsx";
 
 function Id({ pageTitle }) {
-    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    const { BASE_URL } = useData();
 
     useEffect(() => {
         document.title = pageTitle;

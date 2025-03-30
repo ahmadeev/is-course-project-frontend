@@ -1,13 +1,16 @@
 import React, { createContext, useState, useContext } from 'react';
 import {UserDTO} from "../../../utils/user.model.js";
+import {useData} from "./DataProvider.jsx";
 
 const AuthContext = createContext();
 
-const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
-const AUTH_BASE_URL = `${BASE_URL}/auth`;
-
 // компонент AuthProvider оборачивает приложение и предоставляет доступ к AuthContext
 export const AuthProvider = ({ children }) => {
+    // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+
+    const { BASE_URL } = useData();
+    const AUTH_BASE_URL = `${BASE_URL}/auth`;
+
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
         const savedAuthState = sessionStorage.getItem("isAuthenticated");
         return savedAuthState === "true";

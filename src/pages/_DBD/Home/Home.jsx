@@ -3,9 +3,11 @@ import styles from "./Home.module.css";
 import {useEffect, useState} from "react";
 import {crudReadMany} from "../../../utils/crud.js";
 import DynamicDataText from "../../../components/_DBD/utils/DynamicDataText.jsx";
+import {useData} from "../../../components/_DBD/utils/DataProvider.jsx";
 
 function Home({ pageTitle }) {
-    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    const { BASE_URL } = useData();
 
     useEffect(() => {
         document.title = pageTitle;

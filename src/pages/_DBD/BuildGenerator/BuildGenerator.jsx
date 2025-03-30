@@ -7,9 +7,12 @@ import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.
 import SelectButton from "../../../components/_Common/SelectButton/SelectButton.jsx";
 import Alert from "../../../components/_Common/Alert/Alert.jsx";
 import {useNotification} from "../../../components/_Common/Notification/NotificationProvider.jsx";
+import {useLocation} from "react-router-dom";
+import {useData} from "../../../components/_DBD/utils/DataProvider.jsx";
 
 const BuildCreator = () => {
-    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    const { BASE_URL } = useData();
 
     const { addNotification } = useNotification();
 

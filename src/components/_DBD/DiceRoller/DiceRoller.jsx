@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import styles from './DiceRoller.module.css';
 import {useNotification} from "../../_Common/Notification/NotificationProvider.jsx";
+import {useData} from "../utils/DataProvider.jsx";
 
 const DiceRoller = () => {
-    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+
+    const { BASE_URL } = useData();
 
     const { addNotification } = useNotification();
 

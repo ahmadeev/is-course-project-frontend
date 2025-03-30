@@ -3,7 +3,13 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    // dev
+    // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+
+    // prod
+    const bu = "/api";
+
+    const [BASE_URL, setBASE_URL] = useState(bu);
     // ------
     const [dlc, setDlc] = useState(null);
 
@@ -133,6 +139,7 @@ export const DataProvider = ({ children }) => {
 
     return (
         <DataContext.Provider value={{
+            BASE_URL,
             dlc,
             survivorPerks, killerPerks,
             favoriteSurvivorBuildIds, setFavoriteSurvivorBuildIds, favoriteKillerBuildIds, setFavoriteKillerBuildIds, setIsFavoriteLoaded,
