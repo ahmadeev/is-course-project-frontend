@@ -9,6 +9,7 @@ import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
 import CollapseToggleSwitch from "../../../components/_Common/CollapseToggleSwitch/CollapseToggleSwitch.jsx";
 
 function Id({ pageTitle }) {
+    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
 
     useEffect(() => {
         document.title = pageTitle;
@@ -69,7 +70,7 @@ function Id({ pageTitle }) {
                         {/* killer build table */}
                         <DynamicDataTable
                             fetchData={crudReadMany}
-                            baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer"
+                            baseUrl={`${BASE_URL}/favorites/build/killer`}
                             tableReloadParentState={reloadKillerBuildTable}
                             setTableReloadParentState={setReloadKillerBuildTable}
                             columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"]}
@@ -93,7 +94,7 @@ function Id({ pageTitle }) {
                                                                 const newRating = e.target.value;
                                                                 try {
                                                                     const response = await fetch(
-                                                                        `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer/${item.id}/rating?rating=${newRating}`,
+                                                                        `${BASE_URL}/build/killer/${item.id}/rating?rating=${newRating}`,
                                                                         {
                                                                             method: "PATCH",
                                                                             // headers: { "Content-Type": "application/json" },
@@ -124,7 +125,7 @@ function Id({ pageTitle }) {
                                                                 <input type="checkbox" checked={item.approvedByAdmin}
                                                                        onChange={async () => {
                                                                            const response = await fetch(
-                                                                               `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer/${item.id}/approve?approved=${!item.approvedByAdmin}`,
+                                                                               `${BASE_URL}/build/killer/${item.id}/approve?approved=${!item.approvedByAdmin}`,
                                                                                {method: "PUT"}
                                                                            );
                                                                            /*const result = await response.json();
@@ -153,7 +154,7 @@ function Id({ pageTitle }) {
                                                                 try {
                                                                     if (isAboutToAdd) {
                                                                         const response = await fetch(
-                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
+                                                                            `${BASE_URL}/favorites/build/killer/${item.id}`,
                                                                             {method: "POST"}
                                                                         );
                                                                         const result = await response.json();
@@ -162,7 +163,7 @@ function Id({ pageTitle }) {
                                                                         }
                                                                     } else {
                                                                         const response = await fetch(
-                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
+                                                                            `${BASE_URL}/favorites/build/killer/${item.id}`,
                                                                             {method: "DELETE"}
                                                                         );
                                                                         const result = await response.json();
@@ -197,7 +198,7 @@ function Id({ pageTitle }) {
                         {/* survivor build table */}
                         <DynamicDataTable
                             fetchData={crudReadMany}
-                            baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor"
+                            baseUrl={`${BASE_URL}/favorites/build/survivor`}
                             tableReloadParentState={reloadSurvivorBuildTable}
                             setTableReloadParentState={setReloadSurvivorBuildTable}
                             columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"]}
@@ -220,7 +221,7 @@ function Id({ pageTitle }) {
                                                                 const newRating = e.target.value;
                                                                 try {
                                                                     const response = await fetch(
-                                                                        `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor/${item.id}/rating?rating=${newRating}`,
+                                                                        `${BASE_URL}/build/survivor/${item.id}/rating?rating=${newRating}`,
                                                                         {
                                                                             method: "PATCH",
                                                                             //headers: { "Content-Type": "application/json" },
@@ -251,7 +252,7 @@ function Id({ pageTitle }) {
                                                                 <input type="checkbox" checked={item.approvedByAdmin}
                                                                        onChange={async () => {
                                                                            const response = await fetch(
-                                                                               `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor/${item.id}/approve?approved=${!item.approvedByAdmin}`,
+                                                                               `${BASE_URL}/build/survivor/${item.id}/approve?approved=${!item.approvedByAdmin}`,
                                                                                {method: "PUT"}
                                                                            );
                                                                            /*const result = await response.json();
@@ -280,7 +281,7 @@ function Id({ pageTitle }) {
                                                                 try {
                                                                     if (isAboutToAdd) {
                                                                         const response = await fetch(
-                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor/${item.id}`,
+                                                                            `${BASE_URL}/favorites/build/survivor/${item.id}`,
                                                                             {method: "POST"}
                                                                         );
                                                                         const result = await response.json();
@@ -289,7 +290,7 @@ function Id({ pageTitle }) {
                                                                         }
                                                                     } else {
                                                                         const response = await fetch(
-                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor/${item.id}`,
+                                                                            `${BASE_URL}/favorites/build/survivor/${item.id}`,
                                                                             {method: "DELETE"}
                                                                         );
                                                                         const result = await response.json();
@@ -337,7 +338,7 @@ function Id({ pageTitle }) {
                 {!foldMatches && matchCharacterState === "survivor" && (
                     <DynamicDataTable
                         fetchData={crudReadMany}
-                        baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/match/survivor"
+                        baseUrl={`${BASE_URL}/match/survivor`}
                         tableReloadParentState={reloadSurvivorMatchTable}
                         setTableReloadParentState={setReloadSurvivorMatchTable}
                         columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "won", "createdAt"]}
@@ -367,7 +368,7 @@ function Id({ pageTitle }) {
                 {!foldMatches && matchCharacterState === "killer" && (
                     <DynamicDataTable
                         fetchData={crudReadMany}
-                        baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/match/killer"
+                        baseUrl={`${BASE_URL}/match/killer`}
                         tableReloadParentState={reloadKillerMatchTable}
                         setTableReloadParentState={setReloadKillerMatchTable}
                         columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "won", "createdAt"]}

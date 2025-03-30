@@ -6,11 +6,12 @@ import BuildCard from "../../../components/_DBD/BuildCard/BuildCard.jsx";
 import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
 import SelectButton from "../../../components/_Common/SelectButton/SelectButton.jsx";
 import Alert from "../../../components/_Common/Alert/Alert.jsx";
+import {useNotification} from "../../../components/_Common/Notification/NotificationProvider.jsx";
 
 const BuildCreator = () => {
-    const [alertActive, setAlertActive] = useState(false);
-    const [alertMessage, setAlertMessage] = useState("");
-    const [alertStatus, setAlertStatus] = useState(false);
+    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+
+    const { addNotification } = useNotification();
 
     const [data, setData] = useState(null);
 
@@ -23,12 +24,6 @@ const BuildCreator = () => {
         {label: "most-popular", value: "most-popular"}
     ]
     const [buildLookUpOption, setBuildLookUpOption] = useState(buildLookUpOptions[0]);
-
-    useEffect(() => {
-        if (alertMessage !== "") {
-            setAlertActive(true);
-        }
-    }, [alertMessage, alertStatus])
 
     return (
         <>
@@ -49,7 +44,7 @@ const BuildCreator = () => {
                     className={style.selectButton}
                     onClick={() => {
                     fetch(
-                        `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/${characterState}/random`,
+                        `${BASE_URL}/build/${characterState}/random`,
                         {method: "GET"}
                     )
                         .then((res) => res.json())
@@ -62,8 +57,7 @@ const BuildCreator = () => {
                         })
                         .catch((error) => {
                             console.error(error);
-                            setAlertMessage(error.message);
-                            setAlertStatus(prev => !prev);
+                            addNotification(error.message, "error");
                         })
                 }}>Сгенерировать</button>
                 <SelectButton
@@ -72,7 +66,7 @@ const BuildCreator = () => {
                     options={buildLookUpOptions}
                     onButtonClick={(selected) => {
                         fetch(
-                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/${characterState}/random/${selected.value}`,
+                            `${BASE_URL}/build/${characterState}/random/${selected.value}`,
                             {method: "GET"}
                         )
                             .then((res) => res.json())
@@ -85,18 +79,10 @@ const BuildCreator = () => {
                             })
                             .catch((error) => {
                                 console.error(error);
-                                setAlertMessage(error.message);
-                                setAlertStatus(prev => !prev);
+                                addNotification(error.message, "error");
                             })
                     }}
                 />
-
-                <Alert
-                    message={alertMessage}
-                    isActive={alertActive}
-                    onClose={() => setAlertActive(false)}
-                />
-
             </div>
         </>
     );

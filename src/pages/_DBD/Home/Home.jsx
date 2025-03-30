@@ -5,6 +5,7 @@ import {crudReadMany} from "../../../utils/crud.js";
 import DynamicDataText from "../../../components/_DBD/utils/DynamicDataText.jsx";
 
 function Home({ pageTitle }) {
+    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
 
     useEffect(() => {
         document.title = pageTitle;
@@ -19,7 +20,7 @@ function Home({ pageTitle }) {
                 {/* dlc content */}
                 <DynamicDataText
                     fetchData={crudReadMany}
-                    baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/dlc"
+                    baseUrl={`${BASE_URL}/dlc`}
                     contentReloadParentState={reloadDlcContent}
                     setContentReloadParentState={setReloadDlcContent}
                 ></DynamicDataText>

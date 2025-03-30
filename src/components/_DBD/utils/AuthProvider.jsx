@@ -3,7 +3,8 @@ import {UserDTO} from "../../../utils/user.model.js";
 
 const AuthContext = createContext();
 
-const BASE_URL = "http://localhost:8080/backend-jakarta-ee-1.0-SNAPSHOT/api/auth";
+const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+const AUTH_BASE_URL = `${BASE_URL}/auth`;
 
 // компонент AuthProvider оборачивает приложение и предоставляет доступ к AuthContext
 export const AuthProvider = ({ children }) => {
@@ -31,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
         // было так:
         // crudCreate(`${BASE_URL}/sign-in`, new UserDTO(name, password));
-        return fetch(`${BASE_URL}/sign-in`, {
+        return fetch(`${AUTH_BASE_URL}/sign-in`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -71,7 +72,7 @@ export const AuthProvider = ({ children }) => {
         console.log("Sign up...");
 
         // crudCreate(`${BASE_URL}/sign-up`, new UserDTO(name, password));
-        return fetch(`${BASE_URL}/sign-up`, {
+        return fetch(`${AUTH_BASE_URL}/sign-up`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

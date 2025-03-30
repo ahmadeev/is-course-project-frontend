@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './Table.module.css';
-import {useAuth} from "../utils/AuthProvider.jsx"; // Предполагаемый импорт стилей
+import {useAuth} from "../utils/AuthProvider.jsx";
+import {useNotification} from "../../_Common/Notification/NotificationProvider.jsx"; // Предполагаемый импорт стилей
 
 const DynamicDataTable = ({
                          dynamicData=null,
@@ -21,6 +22,7 @@ const DynamicDataTable = ({
                          setAlertStatusParentState
                      }) => {
     const { logout } = useAuth();
+    const { addNotification } = useNotification();
 
     const [data, setData] = useState([]);
     const [page, setPage] = useState(0);
@@ -68,6 +70,7 @@ const DynamicDataTable = ({
                 setData(responseData.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
+                addNotification(error.message, "error");
             } finally {
                 // setTableReloadParentState(false); // TODO: пока не очень понятно но ладно
                 setIsLoading(false);

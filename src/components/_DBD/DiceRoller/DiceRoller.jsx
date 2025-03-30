@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import styles from './DiceRoller.module.css';
+import {useNotification} from "../../_Common/Notification/NotificationProvider.jsx";
 
 const DiceRoller = () => {
+    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+
+    const { addNotification } = useNotification();
+
     const [rolling, setRolling] = useState(false);
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
@@ -13,7 +18,7 @@ const DiceRoller = () => {
 
         try {
             const response = await fetch(
-                'http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/external/roll-dice?amount=1&max-value=20'
+                `${BASE_URL}/external/roll-dice?amount=1&max-value=20`
             );
             const data = await response.json();
 
@@ -28,6 +33,7 @@ const DiceRoller = () => {
         } catch (err) {
             setRolling(false);
             setError(err.message);
+            addNotification(err.message, "error");
         }
     };
 

@@ -10,6 +10,7 @@ import Modal from "../../../components/_Common/Modal/Modal.jsx";
 import TagList from "../../../components/_DBD/TagList/TagList.jsx";
 
 function Main({ pageTitle }) {
+    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
 
     useEffect(() => {
         document.title = pageTitle;
@@ -43,7 +44,7 @@ function Main({ pageTitle }) {
     useEffect(() => {
         if (currentBuild === null) return;
         const fetchData = async () => {
-            await fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/tag/build/${characterState}?build=${currentBuild.id}`, {
+            await fetch(`${BASE_URL}/tag/build/${characterState}?build=${currentBuild.id}`, {
                 method: "GET",
             })
                 .then((res) => res.json())
@@ -85,7 +86,7 @@ function Main({ pageTitle }) {
                         {/* killer perk table */}
                         <DynamicDataTable
                             fetchData={crudReadMany}
-                            baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/perk/killer"
+                            baseUrl={`${BASE_URL}/perk/killer`}
                             tableReloadParentState={reloadKillerPerksTable}
                             setTableReloadParentState={setReloadKillerPerksTable}
                             columns={["id", "name", "description", "killerId"]}
@@ -98,7 +99,7 @@ function Main({ pageTitle }) {
                         {/* survivor perk table */}
                         <DynamicDataTable
                             fetchData={crudReadMany}
-                            baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/perk/survivor"
+                            baseUrl={`${BASE_URL}/perk/survivor`}
                             tableReloadParentState={reloadSurvivorPerksTable}
                             setTableReloadParentState={setReloadSurvivorPerksTable}
                             columns={["id", "name", "description", "survivorId"]}
@@ -111,7 +112,7 @@ function Main({ pageTitle }) {
                         {/* killer build table */}
                         <DynamicDataTable
                             fetchData={crudReadMany}
-                            baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer"
+                            baseUrl={`${BASE_URL}/build/killer`}
                             tableReloadParentState={reloadKillerBuildTable}
                             setTableReloadParentState={setReloadKillerBuildTable}
                             columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"]}
@@ -148,7 +149,7 @@ function Main({ pageTitle }) {
                                                                 const newRating = e.target.value;
                                                                 try {
                                                                     const response = await fetch(
-                                                                        `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer/${item.id}/rating?rating=${newRating}`,
+                                                                        `${BASE_URL}/build/killer/${item.id}/rating?rating=${newRating}`,
                                                                         {
                                                                             method: "PATCH",
                                                                             // headers: { "Content-Type": "application/json" },
@@ -184,7 +185,7 @@ function Main({ pageTitle }) {
                                                                            onChange={async (e) => {
                                                                                e.stopPropagation();
                                                                                const response = await fetch(
-                                                                                   `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer/${item.id}/approve?approved=${!item.approvedByAdmin}`,
+                                                                                   `${BASE_URL}/build/killer/${item.id}/approve?approved=${!item.approvedByAdmin}`,
                                                                                    {method: "PUT"}
                                                                                );
                                                                                /*const result = await response.json();
@@ -219,7 +220,7 @@ function Main({ pageTitle }) {
                                                                 try {
                                                                     if (isAboutToAdd) {
                                                                         const response = await fetch(
-                                                                                `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
+                                                                                `${BASE_URL}/favorites/build/killer/${item.id}`,
                                                                                 {method: "POST"}
                                                                             );
                                                                             const result = await response.json();
@@ -228,7 +229,7 @@ function Main({ pageTitle }) {
                                                                             }
                                                                         } else {
                                                                             const response = await fetch(
-                                                                                `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer/${item.id}`,
+                                                                                `${BASE_URL}/favorites/build/killer/${item.id}`,
                                                                                 {method: "DELETE"}
                                                                             );
                                                                             const result = await response.json();
@@ -261,7 +262,7 @@ function Main({ pageTitle }) {
                         {/* survivor build table */}
                         <DynamicDataTable
                             fetchData={crudReadMany}
-                            baseUrl="http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor"
+                            baseUrl={`${BASE_URL}/build/survivor`}
                             tableReloadParentState={reloadSurvivorBuildTable}
                             setTableReloadParentState={setReloadSurvivorBuildTable}
                             columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"]}
@@ -298,7 +299,7 @@ function Main({ pageTitle }) {
                                                                 const newRating = e.target.value;
                                                                 try {
                                                                     const response = await fetch(
-                                                                        `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor/${item.id}/rating?rating=${newRating}`,
+                                                                        `${BASE_URL}/build/survivor/${item.id}/rating?rating=${newRating}`,
                                                                         {
                                                                             method: "PATCH",
                                                                             //headers: { "Content-Type": "application/json" },
@@ -335,7 +336,7 @@ function Main({ pageTitle }) {
                                                                        onChange={async (e) => {
                                                                            e.stopPropagation();
                                                                            const response = await fetch(
-                                                                               `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor/${item.id}/approve?approved=${!item.approvedByAdmin}`,
+                                                                               `${BASE_URL}/build/survivor/${item.id}/approve?approved=${!item.approvedByAdmin}`,
                                                                                {method: "PUT"}
                                                                            );
                                                                            /*const result = await response.json();
@@ -369,7 +370,7 @@ function Main({ pageTitle }) {
                                                                 try {
                                                                     if (isAboutToAdd) {
                                                                         const response = await fetch(
-                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor/${item.id}`,
+                                                                            `${BASE_URL}/favorites/build/survivor/${item.id}`,
                                                                             {method: "POST"}
                                                                         );
                                                                         const result = await response.json();
@@ -378,7 +379,7 @@ function Main({ pageTitle }) {
                                                                         }
                                                                     } else {
                                                                         const response = await fetch(
-                                                                            `http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor/${item.id}`,
+                                                                            `${BASE_URL}/favorites/build/survivor/${item.id}`,
                                                                             {method: "DELETE"}
                                                                         );
                                                                         const result = await response.json();
@@ -419,7 +420,7 @@ function Main({ pageTitle }) {
                             <TagList
                                 tagsData={currentBuildData}
                                 onTagClick={(tag) => {
-                                    fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/tag/build/${characterState}`, {
+                                    fetch(`${BASE_URL}/tag/build/${characterState}`, {
                                         method: "POST",
                                         headers: {
                                             "Content-Type": "application/json"
@@ -451,7 +452,7 @@ function Main({ pageTitle }) {
                                     setCurrentBuildTagInput(e.target.value);
                                 }} />
                                 <button onClick={() => {
-                                    fetch(`http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/tag/build/${characterState}`, {
+                                    fetch(`${BASE_URL}/tag/build/${characterState}`, {
                                         method: "POST",
                                         headers: {
                                             "Content-Type": "application/json"

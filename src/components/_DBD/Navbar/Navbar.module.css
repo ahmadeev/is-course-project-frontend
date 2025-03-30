@@ -15,7 +15,7 @@
 
     font-size: 2vh;
 
-    z-index: 9;
+    z-index: 10000;
 }
 
 nav.navbar a {

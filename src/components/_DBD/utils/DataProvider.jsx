@@ -3,12 +3,13 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
+    const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
     // ------
     const [dlc, setDlc] = useState(null);
 
     const [isDlcLoaded, setDlcLoaded] = useState(false);
 
-    const DLC_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/dlc";
+    const DLC_URL = `${BASE_URL}/dlc`;
 
     const [survivorPerks, setSurvivorPerks] = useState([]);
     const [killerPerks, setKillerPerks] = useState([]);
@@ -18,8 +19,8 @@ export const DataProvider = ({ children }) => {
 
     const [isFavoriteLoaded, setIsFavoriteLoaded] = useState(false);
 
-    const FAVORITE_SURVIVOR_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/survivor";
-    const FAVORITE_KILLER_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/favorites/build/killer";
+    const FAVORITE_SURVIVOR_BUILDS_URL = `${BASE_URL}/favorites/build/survivor`;
+    const FAVORITE_KILLER_BUILDS_URL = `${BASE_URL}/favorites/build/killer`;
 
     const [favoriteSurvivorBuildIds, setFavoriteSurvivorBuildIds] = useState([]);
     const [favoriteKillerBuildIds, setFavoriteKillerBuildIds] = useState([]);
@@ -29,8 +30,8 @@ export const DataProvider = ({ children }) => {
 
     const [isRatedLoaded, setIsRatedLoaded] = useState(false);
 
-    const RATED_SURVIVOR_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/survivor/rating";
-    const RATED_KILLER_BUILDS_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api/build/killer/rating";
+    const RATED_SURVIVOR_BUILDS_URL = `${BASE_URL}/build/survivor/rating`;
+    const RATED_KILLER_BUILDS_URL = `${BASE_URL}/build/killer/rating`;
 
 
     useEffect(() => {

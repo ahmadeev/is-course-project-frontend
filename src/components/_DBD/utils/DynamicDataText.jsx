@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import styles from './Text.module.css';
 import {useAuth} from "./AuthProvider.jsx";
 import DynamicDataTextModule from "./DynamicDataTextModule.jsx";
+import {useNotification} from "../../_Common/Notification/NotificationProvider.jsx";
 
 const DynamicDataText = ({
                               dynamicData=null,
@@ -20,6 +21,7 @@ const DynamicDataText = ({
                               setAlertStatusParentState
                           }) => {
     const { logout } = useAuth();
+    const { addNotification } = useNotification();
 
     const [data, setData] = useState([]);
 
@@ -42,6 +44,7 @@ const DynamicDataText = ({
             } catch (error) {
                 setErrorMessage(error.message);
                 console.error("Error fetching data:", error);
+                addNotification(error.message, "error");
             } finally {
                 setContentReloadParentState(false);
                 setIsLoading(false);
