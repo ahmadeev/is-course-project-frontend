@@ -52,7 +52,7 @@ export function crudReadMany(
         sortBy="",
         sortDir=""
     ) {
-    return fetch(`${url}?page=${page}&pageSize=${size}&filterValue=${filterValue}&filterCol=${filterCol}&sortBy=${sortBy}&sortDir=${sortDir}`, {
+    return fetch(`${url}?page=${page}&size=${size}&filterValue=${filterValue}&filterCol=${filterCol}&sortBy=${sortBy}&sortDir=${sortDir}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`,
