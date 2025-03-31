@@ -78,7 +78,7 @@ const DynamicDataTable = ({
         };
 
         dynamicData ? setData(dynamicData) : loadData();
-    }, [fetchData, page, size, tableReloadParentState]);
+    }, [fetchData, baseUrl, page, size, tableReloadParentState]);
 
 /*
     // WebSocket

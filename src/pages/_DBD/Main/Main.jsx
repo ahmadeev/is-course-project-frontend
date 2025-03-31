@@ -37,6 +37,8 @@ function Main({ pageTitle }) {
     const [currentBuildTagInput, setCurrentBuildTagInput] = useState("");
     const [isTagListReloaded, setIsTagListReloaded] = useState(true);
 
+    const [currentBuildRatingData, setCurrentBuildRatingData] = useState(null);
+
     const rowOnClick = (item) => {
         setCurrentBuild(item);
         setIsBuildTagModalOpen(true);
@@ -60,6 +62,23 @@ function Main({ pageTitle }) {
                 })
         }
         fetchData();
+
+        const fetchRating = async () => {
+            await fetch(`${BASE_URL}/build/${characterState}/rating?build=${currentBuild.id}`, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                }
+            })
+                .then((res) => res.json())
+                .then((result) => {
+                    setCurrentBuildRatingData(result.data);
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
+        fetchRating();
     }, [currentBuild, isTagListReloaded]);
 
     return (
@@ -138,45 +157,8 @@ function Main({ pageTitle }) {
                                                 return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
                                             } else if (col === "rating") {
                                                 return (
-                                                    <td
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                        }}
-                                                        key={colIndex}
-                                                    >
-                                                        <select
-                                                            value={item.rating || 0}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                            }}
-                                                            onChange={async (e) => {
-                                                                const newRating = e.target.value;
-                                                                try {
-                                                                    const response = await fetch(
-                                                                        `${BASE_URL}/build/killer/${item.id}/rating?rating=${newRating}`,
-                                                                        {
-                                                                            method: "PATCH",
-                                                                            // headers: { "Content-Type": "application/json" },
-                                                                            // body: JSON.stringify({ rating: newRating })
-                                                                            headers: {
-                                                                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
-                                                                            }
-                                                                        }
-                                                                    );
-                                                                    const result = await response.json();
-                                                                    if (result.status === "SUCCESS") {
-                                                                        setReloadKillerBuildTable(prev => !prev);
-                                                                    }
-                                                                } catch (error) {
-                                                                    console.error("Ошибка при обновлении рейтинга:", error);
-                                                                }
-                                                            }}
-                                                        >
-                                                            <option disabled value={0}>0</option>
-                                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                                                                <option key={num} value={num}>{num}</option>
-                                                            ))}
-                                                        </select>
+                                                    <td key={colIndex}>
+                                                        {item.rating + "*"}
                                                     </td>
                                                 )} else if (col === "approvedByAdmin") {
                                                     return (
@@ -306,45 +288,8 @@ function Main({ pageTitle }) {
                                                 return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
                                             } else if (col === "rating") {
                                                 return (
-                                                    <td
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                        }}
-                                                        key={colIndex}
-                                                    >
-                                                        <select
-                                                            value={item.rating || 0}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                            }}
-                                                            onChange={async (e) => {
-                                                                const newRating = e.target.value;
-                                                                try {
-                                                                    const response = await fetch(
-                                                                        `${BASE_URL}/build/survivor/${item.id}/rating?rating=${newRating}`,
-                                                                        {
-                                                                            method: "PATCH",
-                                                                            //headers: { "Content-Type": "application/json" },
-                                                                            //body: JSON.stringify({ rating: newRating })
-                                                                            headers: {
-                                                                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
-                                                                            }
-                                                                        }
-                                                                    );
-                                                                    const result = await response.json();
-                                                                    if (result.status === "SUCCESS") {
-                                                                        setReloadSurvivorBuildTable(prev => !prev);
-                                                                    }
-                                                                } catch (error) {
-                                                                    console.error("Ошибка при обновлении рейтинга:", error);
-                                                                }
-                                                            }}
-                                                        >
-                                                            <option disabled value={0}>0</option>
-                                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                                                                <option key={num} value={num}>{num}</option>
-                                                            ))}
-                                                        </select>
+                                                    <td key={colIndex}>
+                                                        {item.rating + "*"}
                                                     </td>
                                                 );
                                             } else if (col === "approvedByAdmin") {
@@ -489,9 +434,44 @@ function Main({ pageTitle }) {
                     {
                         currentBuildData && (
                             <>
+                                <select
+                                    value={currentBuildRatingData?.rating || 0}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                    }}
+                                    onChange={async (e) => {
+                                        const newRating = e.target.value;
+                                        try {
+                                            const response = await fetch(
+                                                `${BASE_URL}/build/${characterState}/${currentBuild.id}/rating?rating=${newRating}`,
+                                                {
+                                                    method: "PATCH",
+                                                    // headers: { "Content-Type": "application/json" },
+                                                    // body: JSON.stringify({ rating: newRating })
+                                                    headers: {
+                                                        'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                    }
+                                                }
+                                            );
+                                            const result = await response.json();
+                                            if (result.status === "SUCCESS") {
+                                                (characterState === "survivor" ? setReloadSurvivorBuildTable : setReloadKillerBuildTable)(prev => !prev);
+                                            }
+                                        } catch (error) {
+                                            console.error("Ошибка при обновлении рейтинга:", error);
+                                        } finally {
+                                            setIsTagListReloaded(prev => !prev);
+                                        }
+                                    }}
+                                >
+                                    <option disabled value={0}>0</option>
+                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                                        <option key={num} value={num}>{num}</option>
+                                    ))}
+                                </select>
                                 <input type="text" placeholder="от 3 до 10 символов" onChange={(e) => {
                                     setCurrentBuildTagInput(e.target.value);
-                                }} />
+                                }}/>
                                 <button onClick={() => {
                                     fetch(`${BASE_URL}/tag/build/${characterState}`, {
                                         method: "POST",
@@ -508,7 +488,8 @@ function Main({ pageTitle }) {
                                         .catch((error) => {
                                             console.error(error);
                                         })
-                                }}>Отправить</button>
+                                }}>Отправить
+                                </button>
                                 <br/>
                             </>
                         )

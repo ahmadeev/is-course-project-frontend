@@ -7,6 +7,8 @@ import {useData} from "../../../components/_DBD/utils/DataProvider.jsx";
 import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
 import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
 import CollapseToggleSwitch from "../../../components/_Common/CollapseToggleSwitch/CollapseToggleSwitch.jsx";
+import TagList from "../../../components/_DBD/TagList/TagList.jsx";
+import Modal from "../../../components/_Common/Modal/Modal.jsx";
 
 function Id({ pageTitle }) {
     // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
@@ -32,6 +34,56 @@ function Id({ pageTitle }) {
     const [reloadKillerMatchTable, setReloadKillerMatchTable] = useState(false);
     const [reloadSurvivorMatchTable, setReloadSurvivorMatchTable] = useState(false);
     // ------
+    const [isBuildTagModalOpen, setIsBuildTagModalOpen] = useState(false);
+    const [currentBuild, setCurrentBuild] = useState(null);
+    const [currentBuildData, setCurrentBuildData] = useState(null);
+    const [currentBuildTagInput, setCurrentBuildTagInput] = useState("");
+    const [isTagListReloaded, setIsTagListReloaded] = useState(true);
+
+    const [currentBuildRatingData, setCurrentBuildRatingData] = useState(null);
+
+    const rowOnClick = (item) => {
+        setCurrentBuild(item);
+        setIsBuildTagModalOpen(true);
+    }
+
+    useEffect(() => {
+        if (currentBuild === null) return;
+        const fetchData = async () => {
+            await fetch(`${BASE_URL}/tag/build/${favoriteCharacterState}?build=${currentBuild.id}`, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                }
+            })
+                .then((res) => res.json())
+                .then((result) => {
+                    setCurrentBuildData(result.data);
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
+        fetchData();
+
+        const fetchRating = async () => {
+            await fetch(`${BASE_URL}/build/${favoriteCharacterState}/rating?build=${currentBuild.id}`, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                }
+            })
+                .then((res) => res.json())
+                .then((result) => {
+                    setCurrentBuildRatingData(result.data);
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
+        fetchRating();
+    }, [currentBuild, isTagListReloaded]);
+
 
     return (
         <>
@@ -66,166 +118,25 @@ function Id({ pageTitle }) {
                     TODO: удалять из таблицы после удаления из избранного, сделать стили.
                     TODO: таблица отличается только урлами от родительской
                 */}
-                {!foldFavorites && favoriteCharacterState === "killer" && (
-                    <>
-                        {/* killer build table */}
-                        <DynamicDataTable
-                            fetchData={crudReadMany}
-                            baseUrl={`${BASE_URL}/favorites/build/killer`}
-                            tableReloadParentState={reloadKillerBuildTable}
-                            setTableReloadParentState={setReloadKillerBuildTable}
-                            columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"]}
-
-                            renderRow={(item, rowIndex) => {
-                                let columns = ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"];
-
-                                return (
-                                    <tr key={item.id || rowIndex}>
-                                        {columns.map((col, colIndex) => {
-                                            if (col.startsWith("perk")) {
-                                                const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
-                                                const perk = item.perks[perkIndex];
-                                                return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
-                                            } else if (col === "rating") {
-                                                return (
-                                                    <td key={colIndex}>
-                                                        <select
-                                                            value={item.rating || 0}
-                                                            onChange={async (e) => {
-                                                                const newRating = e.target.value;
-                                                                try {
-                                                                    const response = await fetch(
-                                                                        `${BASE_URL}/build/killer/${item.id}/rating?rating=${newRating}`,
-                                                                        {
-                                                                            method: "PATCH",
-                                                                            // headers: { "Content-Type": "application/json" },
-                                                                            // body: JSON.stringify({ rating: newRating })
-                                                                            headers: {
-                                                                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
-                                                                            }
-                                                                        }
-                                                                    );
-                                                                    const result = await response.json();
-                                                                    if (result.status === "SUCCESS") {
-                                                                        setReloadKillerBuildTable(prev => !prev);
-                                                                    }
-                                                                } catch (error) {
-                                                                    console.error("Ошибка при обновлении рейтинга:", error);
-                                                                }
-                                                            }}
-                                                        >
-                                                            <option disabled value={0}>0</option>
-                                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                                                                <option key={num} value={num}>{num}</option>
-                                                            ))}
-                                                        </select>
-                                                    </td>
-                                                )
-                                            } else if (col === "approvedByAdmin") {
-                                                return (
-                                                    <td key={colIndex}>
-                                                        {
-                                                            hasRole("ROLE_ADMIN") && (
-                                                                <input type="checkbox" checked={item.approvedByAdmin}
-                                                                       onChange={async () => {
-                                                                           const response = await fetch(
-                                                                               `${BASE_URL}/build/killer/${item.id}/approve?approved=${!item.approvedByAdmin}`,
-                                                                               {
-                                                                                   method: "PUT",
-                                                                                   headers: {
-                                                                                       'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
-                                                                                   }
-                                                                               }
-                                                                           );
-                                                                           /*const result = await response.json();
-                                                                           if (result.status === "SUCCESS") {
-                                                                               // оптимистичное обновление можно сделать
-                                                                           }*/
-                                                                           setReloadKillerBuildTable(prev => !prev);
-                                                                       }}/>
-                                                            )
-                                                        }
-                                                        {
-                                                            !hasRole("ROLE_ADMIN") && (
-                                                                "" + item.approvedByAdmin
-                                                            )
-                                                        }
-
-                                                    </td>
-                                                )
-                                            } else if (col.startsWith("favorite")) {
-                                                return (
-                                                    <td key={colIndex}>
-                                                        <button
-                                                            className={favoriteKillerBuildIds?.includes(Number(item.id)) ? styles.inFavorite : styles.notInFavorite}
-                                                            onClick={async () => {
-                                                                const isAboutToAdd = !favoriteKillerBuildIds?.includes(Number(item.id));
-                                                                try {
-                                                                    if (isAboutToAdd) {
-                                                                        const response = await fetch(
-                                                                            `${BASE_URL}/favorites/build/killer/${item.id}`,
-                                                                            {
-                                                                                method: "POST",
-                                                                                headers: {
-                                                                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
-                                                                                }
-                                                                            }
-                                                                        );
-                                                                        const result = await response.json();
-                                                                        if (result.status === "SUCCESS") {
-                                                                            setFavoriteKillerBuildIds(prev => [...prev, Number(item.id)]);
-                                                                        }
-                                                                    } else {
-                                                                        const response = await fetch(
-                                                                            `${BASE_URL}/favorites/build/killer/${item.id}`,
-                                                                            {
-                                                                                method: "DELETE",
-                                                                                headers: {
-                                                                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
-                                                                                }
-                                                                            }
-                                                                        );
-                                                                        const result = await response.json();
-                                                                        if (result.status === "SUCCESS") {
-                                                                            setFavoriteKillerBuildIds(prev => prev.filter(id => id !== Number(item.id)));
-                                                                        }
-                                                                    }
-                                                                } catch (error) {
-                                                                    console.error("Ошибка:", error);
-                                                                    setIsFavoriteLoaded(false); // рефетч в глобальном компоненте при ошибке
-                                                                }
-                                                            }}
-                                                        >{favoriteKillerBuildIds?.includes(item.id) ?
-                                                            <i className="fas fa-heart"></i> :
-                                                            <i className="far fa-heart"></i>}
-                                                        </button>
-                                                    </td>
-                                                );
-                                            } else {
-                                                return <td key={colIndex}>{"" + item[col]}</td>;
-                                            }
-                                        })}
-                                    </tr>
-                                )
-                            }}
-                        ></DynamicDataTable>
-                    </>
-                )}
-
-                {!foldFavorites && favoriteCharacterState === "survivor" && (
+                {!foldFavorites && (
                     <>
                         {/* survivor build table */}
                         <DynamicDataTable
                             fetchData={crudReadMany}
-                            baseUrl={`${BASE_URL}/favorites/build/survivor`}
-                            tableReloadParentState={reloadSurvivorBuildTable}
-                            setTableReloadParentState={setReloadSurvivorBuildTable}
+                            baseUrl={`${BASE_URL}/favorites/build/${favoriteCharacterState}`}
+                            tableReloadParentState={favoriteCharacterState === "survivor" ? reloadSurvivorBuildTable : reloadKillerBuildTable}
+                            setTableReloadParentState={favoriteCharacterState === "survivor" ? setReloadSurvivorBuildTable : setReloadKillerBuildTable}
                             columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"]}
                             renderRow={(item, rowIndex) => {
                                 let columns = ["id", "perk 1", "perk 2", "perk 3", "perk 4", "rating", "usageCount", "approvedByAdmin", "favorite"];
 
                                 return (
-                                    <tr key={item.id || rowIndex}>
+                                    <tr
+                                        onClick={() => {
+                                            rowOnClick(item);
+                                        }}
+                                        key={item.id || rowIndex}
+                                    >
                                         {columns.map((col, colIndex) => {
                                             if (col.startsWith("perk")) {
                                                 const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
@@ -234,47 +145,23 @@ function Id({ pageTitle }) {
                                             } else if (col === "rating") {
                                                 return (
                                                     <td key={colIndex}>
-                                                        <select
-                                                            value={item.rating || 0}
-                                                            onChange={async (e) => {
-                                                                const newRating = e.target.value;
-                                                                try {
-                                                                    const response = await fetch(
-                                                                        `${BASE_URL}/build/survivor/${item.id}/rating?rating=${newRating}`,
-                                                                        {
-                                                                            method: "PATCH",
-                                                                            //headers: { "Content-Type": "application/json" },
-                                                                            //body: JSON.stringify({ rating: newRating })
-                                                                            headers: {
-                                                                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
-                                                                            }
-                                                                        }
-                                                                    );
-                                                                    const result = await response.json();
-                                                                    if (result.status === "SUCCESS") {
-                                                                        setReloadSurvivorBuildTable(prev => !prev);
-                                                                    }
-                                                                } catch (error) {
-                                                                    console.error("Ошибка при обновлении рейтинга:", error);
-                                                                }
-                                                            }}
-                                                        >
-                                                            <option disabled value={0}>0</option>
-                                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                                                                <option key={num} value={num}>{num}</option>
-                                                            ))}
-                                                        </select>
+                                                        {item.rating + "*"}
                                                     </td>
                                                 );
                                             } else if (col === "approvedByAdmin") {
                                                 return (
-                                                    <td key={colIndex}>
+                                                    <td
+                                                        onClick={(e) => {
+                                                            if (hasRole("ROLE_ADMIN")) e.stopPropagation();
+                                                        }}
+                                                        key={colIndex}
+                                                    >
                                                         {
                                                             hasRole("ROLE_ADMIN") && (
                                                                 <input type="checkbox" checked={item.approvedByAdmin}
                                                                        onChange={async () => {
                                                                            const response = await fetch(
-                                                                               `${BASE_URL}/build/survivor/${item.id}/approve?approved=${!item.approvedByAdmin}`,
+                                                                               `${BASE_URL}/build/${favoriteCharacterState}/${item.id}/approve?approved=${!item.approvedByAdmin}`,
                                                                                {
                                                                                    method: "PUT",
                                                                                    headers: {
@@ -300,15 +187,20 @@ function Id({ pageTitle }) {
                                                 )
                                             } else if (col.startsWith("favorite")) {
                                                 return (
-                                                    <td key={colIndex}>
+                                                    <td
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                        }}
+                                                        key={colIndex}
+                                                    >
                                                         <button
-                                                            className={favoriteSurvivorBuildIds?.includes(Number(item.id)) ? styles.inFavorite : styles.notInFavorite}
+                                                            className={(favoriteCharacterState === "survivor" ? favoriteSurvivorBuildIds : favoriteKillerBuildIds)?.includes(Number(item.id)) ? styles.inFavorite : styles.notInFavorite}
                                                             onClick={async () => {
-                                                                const isAboutToAdd = !favoriteSurvivorBuildIds?.includes(Number(item.id));
+                                                                const isAboutToAdd = !(favoriteCharacterState === "survivor" ? favoriteSurvivorBuildIds : favoriteKillerBuildIds)?.includes(Number(item.id));
                                                                 try {
                                                                     if (isAboutToAdd) {
                                                                         const response = await fetch(
-                                                                            `${BASE_URL}/favorites/build/survivor/${item.id}`,
+                                                                            `${BASE_URL}/favorites/build/${favoriteCharacterState}/${item.id}`,
                                                                             {
                                                                                 method: "POST",
                                                                                 headers: {
@@ -318,16 +210,16 @@ function Id({ pageTitle }) {
                                                                         );
                                                                         const result = await response.json();
                                                                         if (result.status === "SUCCESS") {
-                                                                            setFavoriteSurvivorBuildIds(prev => [...prev, Number(item.id)]);
+                                                                            (favoriteCharacterState === "survivor" ? setFavoriteSurvivorBuildIds : setFavoriteKillerBuildIds)(prev => [...prev, Number(item.id)]);
                                                                         }
                                                                     } else {
                                                                         const response = await fetch(
-                                                                            `${BASE_URL}/favorites/build/survivor/${item.id}`,
+                                                                            `${BASE_URL}/favorites/build/${favoriteCharacterState}/${item.id}`,
                                                                             {method: "DELETE"}
                                                                         );
                                                                         const result = await response.json();
                                                                         if (result.status === "SUCCESS") {
-                                                                            setFavoriteSurvivorBuildIds(prev => prev.filter(id => id !== Number(item.id)));
+                                                                            (favoriteCharacterState === "survivor" ? setFavoriteSurvivorBuildIds : setFavoriteKillerBuildIds)(prev => prev.filter(id => id !== Number(item.id)));
                                                                         }
                                                                     }
                                                                 } catch (error) {
@@ -335,7 +227,7 @@ function Id({ pageTitle }) {
                                                                     setIsFavoriteLoaded(false); // рефетч при ошибке
                                                                 }
                                                             }}
-                                                        >{favoriteSurvivorBuildIds?.includes(item.id) ?
+                                                        >{(favoriteCharacterState === "survivor" ? favoriteSurvivorBuildIds : favoriteKillerBuildIds)?.includes(item.id) ?
                                                             <i className="fas fa-heart"></i> :
                                                             <i className="far fa-heart"></i>}
                                                         </button>
@@ -367,12 +259,12 @@ function Id({ pageTitle }) {
                     />
                 </div>
 
-                {!foldMatches && matchCharacterState === "survivor" && (
+                {!foldMatches && (
                     <DynamicDataTable
                         fetchData={crudReadMany}
-                        baseUrl={`${BASE_URL}/match/survivor`}
-                        tableReloadParentState={reloadSurvivorMatchTable}
-                        setTableReloadParentState={setReloadSurvivorMatchTable}
+                        baseUrl={`${BASE_URL}/match/${matchCharacterState}`}
+                        tableReloadParentState={matchCharacterState === "survivor" ? reloadSurvivorMatchTable : reloadKillerMatchTable}
+                        setTableReloadParentState={matchCharacterState === "survivor" ? setReloadSurvivorMatchTable : setReloadKillerMatchTable}
                         columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "won", "createdAt"]}
 
                         renderRow={(item, rowIndex) => {
@@ -397,35 +289,110 @@ function Id({ pageTitle }) {
                     ></DynamicDataTable>
                 )}
 
-                {!foldMatches && matchCharacterState === "killer" && (
-                    <DynamicDataTable
-                        fetchData={crudReadMany}
-                        baseUrl={`${BASE_URL}/match/killer`}
-                        tableReloadParentState={reloadKillerMatchTable}
-                        setTableReloadParentState={setReloadKillerMatchTable}
-                        columns={["id", "perk 1", "perk 2", "perk 3", "perk 4", "won", "createdAt"]}
+                <Modal
+                    active={isBuildTagModalOpen}
+                    setActive={setIsBuildTagModalOpen}
+                >
+                    <h2>Комментарии</h2>
 
-                        renderRow={(item, rowIndex) => {
-                            let columns= ["id", "perk 1", "perk 2", "perk 3", "perk 4", "won", "createdAt"];
-
-                            return (
-                                <tr
-                                    key={item.id || rowIndex}
-                                >
-                                    {columns.map((col, colIndex) => {
-                                        if (col.startsWith("perk")) {
-                                            const perkIndex = parseInt(col.split(" ")[1]) - 1; // "perk 1" -> 0
-                                            const perk = item.build.perks[perkIndex];
-                                            return <td key={colIndex}>{perk ? perk.name : "N/A"}</td>;
-                                        } else {
-                                            return <td key={colIndex}>{"" + item[col]}</td>;
+                    {
+                        // TODO: оптимистичное обновление для тегов можно сделать
+                        currentBuildData && (
+                            <TagList
+                                tagsData={currentBuildData}
+                                onTagClick={(tag) => {
+                                    fetch(`${BASE_URL}/tag/build/${favoriteCharacterState}`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                        },
+                                        body: JSON.stringify({build: {id: currentBuild.id}, tag: tag}),
+                                    })
+                                        .then((res) => res.json())
+                                        .then((result) => {
+                                            setIsTagListReloaded(prev => !prev);
+                                        })
+                                        .catch((error) => {
+                                            console.error(error);
+                                        })
+                                }}
+                            />
+                        )
+                    }
+                    {/* глюк с этой строчкой ниже при повторном клике */}
+                    {
+                        !currentBuildData && <p>Данные отсутствуют!</p>
+                    }
+                    {
+                        currentBuildData !== null && currentBuildData.length === 0 && <p>Комментарии отсутствуют!</p>
+                    }
+                    {
+                        currentBuildData && (
+                            <>
+                                <select
+                                    value={currentBuildRatingData?.rating || 0}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                    }}
+                                    onChange={async (e) => {
+                                        const newRating = e.target.value;
+                                        try {
+                                            const response = await fetch(
+                                                `${BASE_URL}/build/${favoriteCharacterState}/${currentBuild.id}/rating?rating=${newRating}`,
+                                                {
+                                                    method: "PATCH",
+                                                    // headers: { "Content-Type": "application/json" },
+                                                    // body: JSON.stringify({ rating: newRating })
+                                                    headers: {
+                                                        'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                    }
+                                                }
+                                            );
+                                            const result = await response.json();
+                                            if (result.status === "SUCCESS") {
+                                                (favoriteCharacterState === "survivor" ? setReloadSurvivorBuildTable : setReloadKillerBuildTable)(prev => !prev);
+                                            }
+                                        } catch (error) {
+                                            console.error("Ошибка при обновлении рейтинга:", error);
+                                        } finally {
+                                            setIsTagListReloaded(prev => !prev);
                                         }
-                                    })}
-                                </tr>
-                            )
-                        }}
-                    ></DynamicDataTable>
-                )}
+                                    }}
+                                >
+                                    <option disabled value={0}>0</option>
+                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                                        <option key={num} value={num}>{num}</option>
+                                    ))}
+                                </select>
+                                <input type="text" placeholder="от 3 до 10 символов" onChange={(e) => {
+                                    setCurrentBuildTagInput(e.target.value);
+                                }}/>
+                                <button onClick={() => {
+                                    fetch(`${BASE_URL}/tag/build/${favoriteCharacterState}`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                        },
+                                        body: JSON.stringify({build: {id: currentBuild.id}, tag: currentBuildTagInput}),
+                                    })
+                                        .then((res) => res.json())
+                                        .then((result) => {
+                                            setIsTagListReloaded(prev => !prev);
+                                        })
+                                        .catch((error) => {
+                                            console.error(error);
+                                        })
+                                }}>Отправить
+                                </button>
+                                <br/>
+                            </>
+                        )
+                    }
+
+                    <button onClick={() => setIsBuildTagModalOpen(false)}>Закрыть</button>
+                </Modal>
 
             </div>
         </>
