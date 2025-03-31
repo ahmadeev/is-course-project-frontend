@@ -47,6 +47,9 @@ function Main({ pageTitle }) {
         const fetchData = async () => {
             await fetch(`${BASE_URL}/tag/build/${characterState}?build=${currentBuild.id}`, {
                 method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                }
             })
                 .then((res) => res.json())
                 .then((result) => {
@@ -155,6 +158,9 @@ function Main({ pageTitle }) {
                                                                             method: "PATCH",
                                                                             // headers: { "Content-Type": "application/json" },
                                                                             // body: JSON.stringify({ rating: newRating })
+                                                                            headers: {
+                                                                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                            }
                                                                         }
                                                                     );
                                                                     const result = await response.json();
@@ -187,7 +193,12 @@ function Main({ pageTitle }) {
                                                                                e.stopPropagation();
                                                                                const response = await fetch(
                                                                                    `${BASE_URL}/build/killer/${item.id}/approve?approved=${!item.approvedByAdmin}`,
-                                                                                   {method: "PUT"}
+                                                                                   {
+                                                                                       method: "PUT",
+                                                                                       headers: {
+                                                                                           'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                       }
+                                                                                   }
                                                                                );
                                                                                /*const result = await response.json();
                                                                                if (result.status === "SUCCESS") {
@@ -222,7 +233,12 @@ function Main({ pageTitle }) {
                                                                     if (isAboutToAdd) {
                                                                         const response = await fetch(
                                                                                 `${BASE_URL}/favorites/build/killer/${item.id}`,
-                                                                                {method: "POST"}
+                                                                                {
+                                                                                    method: "POST",
+                                                                                    headers: {
+                                                                                        'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                    }
+                                                                                }
                                                                             );
                                                                             const result = await response.json();
                                                                             if (result.status === "SUCCESS") {
@@ -231,7 +247,12 @@ function Main({ pageTitle }) {
                                                                         } else {
                                                                             const response = await fetch(
                                                                                 `${BASE_URL}/favorites/build/killer/${item.id}`,
-                                                                                {method: "DELETE"}
+                                                                                {
+                                                                                    method: "DELETE",
+                                                                                    headers: {
+                                                                                        'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                    }
+                                                                                }
                                                                             );
                                                                             const result = await response.json();
                                                                             if (result.status === "SUCCESS") {
@@ -305,6 +326,9 @@ function Main({ pageTitle }) {
                                                                             method: "PATCH",
                                                                             //headers: { "Content-Type": "application/json" },
                                                                             //body: JSON.stringify({ rating: newRating })
+                                                                            headers: {
+                                                                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                            }
                                                                         }
                                                                     );
                                                                     const result = await response.json();
@@ -338,7 +362,12 @@ function Main({ pageTitle }) {
                                                                            e.stopPropagation();
                                                                            const response = await fetch(
                                                                                `${BASE_URL}/build/survivor/${item.id}/approve?approved=${!item.approvedByAdmin}`,
-                                                                               {method: "PUT"}
+                                                                               {
+                                                                                   method: "PUT",
+                                                                                   headers: {
+                                                                                       'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                   }
+                                                                               }
                                                                            );
                                                                            /*const result = await response.json();
                                                                            if (result.status === "SUCCESS") {
@@ -372,7 +401,12 @@ function Main({ pageTitle }) {
                                                                     if (isAboutToAdd) {
                                                                         const response = await fetch(
                                                                             `${BASE_URL}/favorites/build/survivor/${item.id}`,
-                                                                            {method: "POST"}
+                                                                            {
+                                                                                method: "POST",
+                                                                                headers: {
+                                                                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                }
+                                                                            }
                                                                         );
                                                                         const result = await response.json();
                                                                         if (result.status === "SUCCESS") {
@@ -381,7 +415,12 @@ function Main({ pageTitle }) {
                                                                     } else {
                                                                         const response = await fetch(
                                                                             `${BASE_URL}/favorites/build/survivor/${item.id}`,
-                                                                            {method: "DELETE"}
+                                                                            {
+                                                                                method: "DELETE",
+                                                                                headers: {
+                                                                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                }
+                                                                            }
                                                                         );
                                                                         const result = await response.json();
                                                                         if (result.status === "SUCCESS") {
@@ -424,7 +463,8 @@ function Main({ pageTitle }) {
                                     fetch(`${BASE_URL}/tag/build/${characterState}`, {
                                         method: "POST",
                                         headers: {
-                                            "Content-Type": "application/json"
+                                            "Content-Type": "application/json",
+                                            'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
                                         },
                                         body: JSON.stringify({build: {id: currentBuild.id}, tag: tag}),
                                     })
@@ -456,7 +496,8 @@ function Main({ pageTitle }) {
                                     fetch(`${BASE_URL}/tag/build/${characterState}`, {
                                         method: "POST",
                                         headers: {
-                                            "Content-Type": "application/json"
+                                            "Content-Type": "application/json",
+                                            'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
                                         },
                                         body: JSON.stringify({build: {id: currentBuild.id}, tag: currentBuildTagInput}),
                                     })

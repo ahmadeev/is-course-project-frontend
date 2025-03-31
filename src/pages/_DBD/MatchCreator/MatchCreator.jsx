@@ -65,6 +65,7 @@ const MatchCreator = () => {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
+                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
                             },
                             body: JSON.stringify({build: {perks: selectedPerks, id: -1}, won: resultState === "win"}) // TODO: id -- костыль (long -> Long)
                         })

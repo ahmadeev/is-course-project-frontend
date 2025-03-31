@@ -21,7 +21,11 @@ const DiceRoller = () => {
 
         try {
             const response = await fetch(
-                `${BASE_URL}/external/roll-dice?amount=1&max-value=20`
+                `${BASE_URL}/external/roll-dice?amount=1&max-value=20`, {
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                    }
+                }
             );
             const data = await response.json();
 

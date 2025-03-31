@@ -28,16 +28,45 @@ function App() {
                       <Route path="/forbidden" element={<Forbidden pageTitle="Доступ запрещен" />} />
                       <Route path="/auth" element={<Auth pageTitle="Войти" isSignedUp={true} />} />
                       <Route path="/admin" element={
-                          <ProtectedRoute isAuthenticated={isAuthenticated} requiredRoles={["ADMIN"]}>
+                          <ProtectedRoute isAuthenticated={isAuthenticated} requiredRoles={["ROLE_ADMIN"]}>
                               <Admin pageTitle="Панель управления" />
                           </ProtectedRoute>
                       } />
-                      <Route path="/main" element={<Main pageTitle="Главная" />} />
+
+                      <Route path="/main" element={
+                          <ProtectedRoute isAuthenticated={isAuthenticated} requiredRoles={["ROLE_USER"]}>
+                              <Main pageTitle="Главная" />
+                          </ProtectedRoute>
+                      } />
+                      <Route path="/character/:text" element={<CharacterPage pageTitle="Персонаж" />} />
+                      <Route path="/add-match" element={
+                          <ProtectedRoute isAuthenticated={isAuthenticated} requiredRoles={["ROLE_USER"]}>
+                              <MatchCreator />
+                          </ProtectedRoute>
+                      } />
+                      <Route path="/generate-build" element={
+                          <ProtectedRoute isAuthenticated={isAuthenticated} requiredRoles={["ROLE_USER"]}>
+                              <BuildGenerator />
+                          </ProtectedRoute>
+                      } />
+                      <Route path="/roll-dice" element={
+                          <ProtectedRoute isAuthenticated={isAuthenticated} requiredRoles={["ROLE_USER"]}>
+                              <DiceRollerPage />
+                          </ProtectedRoute>
+                      } />
+                      <Route path="/id" element={
+                          <ProtectedRoute isAuthenticated={isAuthenticated} requiredRoles={["ROLE_USER"]}>
+                              <Id />
+                          </ProtectedRoute>
+                      } />
+
+
+{/*                      <Route path="/main" element={<Main pageTitle="Главная" />} />
                       <Route path="/character/:text" element={<CharacterPage pageTitle="Персонаж" />} />
                       <Route path="/add-match" element={<MatchCreator />} />
                       <Route path="/generate-build" element={<BuildGenerator />} />
                       <Route path="/roll-dice" element={<DiceRollerPage />} />
-                      <Route path="/id" element={<Id />} />
+                      <Route path="/id" element={<Id />} />*/}
                   </Routes>
               </HashRouter>
           </AuthProvider>

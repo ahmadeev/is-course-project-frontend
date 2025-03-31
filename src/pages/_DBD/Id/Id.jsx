@@ -100,6 +100,9 @@ function Id({ pageTitle }) {
                                                                             method: "PATCH",
                                                                             // headers: { "Content-Type": "application/json" },
                                                                             // body: JSON.stringify({ rating: newRating })
+                                                                            headers: {
+                                                                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                            }
                                                                         }
                                                                     );
                                                                     const result = await response.json();
@@ -127,7 +130,12 @@ function Id({ pageTitle }) {
                                                                        onChange={async () => {
                                                                            const response = await fetch(
                                                                                `${BASE_URL}/build/killer/${item.id}/approve?approved=${!item.approvedByAdmin}`,
-                                                                               {method: "PUT"}
+                                                                               {
+                                                                                   method: "PUT",
+                                                                                   headers: {
+                                                                                       'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                   }
+                                                                               }
                                                                            );
                                                                            /*const result = await response.json();
                                                                            if (result.status === "SUCCESS") {
@@ -156,7 +164,12 @@ function Id({ pageTitle }) {
                                                                     if (isAboutToAdd) {
                                                                         const response = await fetch(
                                                                             `${BASE_URL}/favorites/build/killer/${item.id}`,
-                                                                            {method: "POST"}
+                                                                            {
+                                                                                method: "POST",
+                                                                                headers: {
+                                                                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                }
+                                                                            }
                                                                         );
                                                                         const result = await response.json();
                                                                         if (result.status === "SUCCESS") {
@@ -165,7 +178,12 @@ function Id({ pageTitle }) {
                                                                     } else {
                                                                         const response = await fetch(
                                                                             `${BASE_URL}/favorites/build/killer/${item.id}`,
-                                                                            {method: "DELETE"}
+                                                                            {
+                                                                                method: "DELETE",
+                                                                                headers: {
+                                                                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                }
+                                                                            }
                                                                         );
                                                                         const result = await response.json();
                                                                         if (result.status === "SUCCESS") {
@@ -227,6 +245,9 @@ function Id({ pageTitle }) {
                                                                             method: "PATCH",
                                                                             //headers: { "Content-Type": "application/json" },
                                                                             //body: JSON.stringify({ rating: newRating })
+                                                                            headers: {
+                                                                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                            }
                                                                         }
                                                                     );
                                                                     const result = await response.json();
@@ -254,7 +275,12 @@ function Id({ pageTitle }) {
                                                                        onChange={async () => {
                                                                            const response = await fetch(
                                                                                `${BASE_URL}/build/survivor/${item.id}/approve?approved=${!item.approvedByAdmin}`,
-                                                                               {method: "PUT"}
+                                                                               {
+                                                                                   method: "PUT",
+                                                                                   headers: {
+                                                                                       'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                   }
+                                                                               }
                                                                            );
                                                                            /*const result = await response.json();
                                                                            if (result.status === "SUCCESS") {
@@ -283,7 +309,12 @@ function Id({ pageTitle }) {
                                                                     if (isAboutToAdd) {
                                                                         const response = await fetch(
                                                                             `${BASE_URL}/favorites/build/survivor/${item.id}`,
-                                                                            {method: "POST"}
+                                                                            {
+                                                                                method: "POST",
+                                                                                headers: {
+                                                                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                }
+                                                                            }
                                                                         );
                                                                         const result = await response.json();
                                                                         if (result.status === "SUCCESS") {

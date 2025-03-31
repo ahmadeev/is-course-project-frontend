@@ -4,10 +4,10 @@ const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
     // dev
-    // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
+    const bu = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
 
     // prod
-    const bu = "/api";
+    // const bu = "/api";
 
     const [BASE_URL, setBASE_URL] = useState(bu);
     // ------
@@ -50,7 +50,11 @@ export const DataProvider = ({ children }) => {
         console.log("Перки Убийц: ", killerPerks)
         const fetchData  = async () => {
             if (!isDlcLoaded) {
-                await fetch(DLC_URL)
+                await fetch(DLC_URL, {
+                    headers: {
+                        'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                    }
+                })
                     .then((res) => res.json())
                     .then((result) => {
                         setDlc(result.data);
@@ -81,8 +85,16 @@ export const DataProvider = ({ children }) => {
         const fetchFavoriteBuilds = async () => {
             try {
                 const [survivorResponse, killerResponse] = await Promise.all([
-                    fetch(FAVORITE_SURVIVOR_BUILDS_URL).then(res => res.json()),
-                    fetch(FAVORITE_KILLER_BUILDS_URL).then(res => res.json())
+                    fetch(FAVORITE_SURVIVOR_BUILDS_URL, {
+                        headers: {
+                            'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                        }
+                    }).then(res => res.json()),
+                    fetch(FAVORITE_KILLER_BUILDS_URL, {
+                        headers: {
+                            'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                        }
+                    }).then(res => res.json())
                 ]);
 
                 if (survivorResponse.status !== 'SUCCESS') throw new Error('Survivor fetch failed');
@@ -113,8 +125,16 @@ export const DataProvider = ({ children }) => {
         const fetchData = async () => {
             try {
                 const [survivorResponse, killerResponse] = await Promise.all([
-                    fetch(RATED_SURVIVOR_BUILDS_URL).then(res => res.json()),
-                    fetch(RATED_KILLER_BUILDS_URL).then(res => res.json())
+                    fetch(RATED_SURVIVOR_BUILDS_URL, {
+                        headers: {
+                            'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                        }
+                    }).then(res => res.json()),
+                    fetch(RATED_KILLER_BUILDS_URL, {
+                        headers: {
+                            'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                        }
+                    }).then(res => res.json())
                 ]);
 
                 if (survivorResponse.status !== 'SUCCESS') throw new Error('Survivor fetch failed');

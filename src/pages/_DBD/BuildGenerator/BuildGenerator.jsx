@@ -48,7 +48,12 @@ const BuildCreator = () => {
                     onClick={() => {
                     fetch(
                         `${BASE_URL}/build/${characterState}/random`,
-                        {method: "GET"}
+                        {
+                            method: "GET",
+                            headers: {
+                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                            }
+                        }
                     )
                         .then((res) => res.json())
                         .then((result) => {
@@ -70,7 +75,12 @@ const BuildCreator = () => {
                     onButtonClick={(selected) => {
                         fetch(
                             `${BASE_URL}/build/${characterState}/random/${selected.value}`,
-                            {method: "GET"}
+                            {
+                                method: "GET",
+                                headers: {
+                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                }
+                            }
                         )
                             .then((res) => res.json())
                             .then((result) => {
