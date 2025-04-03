@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Modal from "../../../components/_Common/Modal/Modal.jsx";
-import PerkSelector from "../../../components/_DBD/RandomizePerks/PerkSelector.jsx";
+import PerkSelector from "../../../components/_DBD/PerkSelector/PerkSelector.jsx";
 import styles from "./MatchCreator.module.css";
 import { useData } from "../../../components/_DBD/utils/DataProvider.jsx";
 import Navbar from "../../../components/_DBD/Navbar/Navbar.jsx";
