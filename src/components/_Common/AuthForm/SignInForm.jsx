@@ -1,9 +1,12 @@
 import {useAuth} from "../../_DBD/utils/AuthProvider.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {useNotification} from "../Notification/NotificationProvider.jsx";
 
-function SignInForm({ from, setIsSignedUpParentState, setAlertMessageParentState, setAlertStatusParentState }) {
+function SignInForm({ from, setIsSignedUpParentState }) {
     const { signIn } = useAuth();
+    const { addNotification } = useNotification();
+
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
@@ -89,19 +92,15 @@ function SignInForm({ from, setIsSignedUpParentState, setAlertMessageParentState
                     )
                         .then(responseData => {
                             if (responseData.status === "SUCCESS") {
-                                // TODO: вынести алерт для логина повыше, чтоб не делать таймаут
-                                setAlertMessageParentState("Успешный вход!")
-                                setTimeout(() => {
-                                    navigate(from, {replace: true})
-                                }, 1500)
+                                addNotification("Успешный вход!", "success");
+                                navigate(from, {replace: true})
                             } else {
                                 setResponseError(responseData.details);
                             }
                         })
                         .catch((error) => {
                             console.error(error);
-                            setAlertMessageParentState(`Ошибка при попытке войти в аккаунт!\n\n(Error: ${error})`);
-                            setAlertStatusParentState((prev) => (!prev));
+                            addNotification(`Ошибка при попытке войти в аккаунт!\n(Error: ${error})`, "error");
                         })
                 }}>Sign In
                 </button>

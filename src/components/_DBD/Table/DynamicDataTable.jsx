@@ -103,7 +103,7 @@ const DynamicDataTable = ({
 
     return (
         <>
-            {header && <h1>{header}</h1>}
+            {header && <h2>{header}</h2>}
 
             {/* TODO: временная мера, пока фильтрация и сортировка отсутствуют */}
 {/*            <div className={styles.filter_block}>

@@ -5,10 +5,13 @@ import styles from "./MatchCreator.module.css";
 import { useData } from "../../../components/_DBD/utils/DataProvider.jsx";
 import Navbar from "../../../components/_DBD/Navbar/Navbar.jsx";
 import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.jsx";
+import {useNotification} from "../../../components/_Common/Notification/NotificationProvider.jsx";
 
 const MatchCreator = () => {
     // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
     const { BASE_URL } = useData();
+
+    const { addNotification } = useNotification();
 
     const [selectedPerks, setSelectedPerks] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -76,9 +79,11 @@ const MatchCreator = () => {
                                 .then((res) => res.json())
                                 .then((result) => {
                                     console.log(result);
+                                    addNotification("Успешно добавлены результаты матча!", "success");
                                 })
                                 .catch((error) => {
                                     console.error(error);
+                                    addNotification("Ошибка при добавлении результатов матча!\n" + error.message, "error");
                                 })
                         }}
                     >

@@ -38,14 +38,10 @@ function Auth({ pageTitle, isSignedUp }) {
                     (<SignInForm
                         from={from}
                         setIsSignedUpParentState={setIsSignedUpHook}
-                        setAlertMessageParentState={setAlertMessage}
-                        setAlertStatusParentState={setAlertStatus}
                     />) :
                     (<SignUpForm
                         from={from}
                         setIsSignedUpParentState={setIsSignedUpHook}
-                        setAlertMessageParentState={setAlertMessage}
-                        setAlertStatusParentState={setAlertStatus}
                     />)
             }
 

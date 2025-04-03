@@ -112,8 +112,8 @@ function Id({ pageTitle }) {
                 */}
                 {!foldFavorites && (
                     <div className={styles.container + " " + styles.centerer + " " + styles.table_special}>
-                        {/* survivor build table */}
                         <DynamicDataTable
+                            header="Избранные сборки"
                             fetchData={crudReadMany}
                             baseUrl={`${BASE_URL}/favorites/build/${favoriteCharacterState}`}
                             tableReloadParentState={favoriteCharacterState === "survivor" ? reloadSurvivorBuildTable : reloadKillerBuildTable}
@@ -261,6 +261,7 @@ function Id({ pageTitle }) {
                 {!foldMatches && (
                     <div className={styles.container + " " + styles.centerer + " " + styles.table_special}>
                         <DynamicDataTable
+                            header="Добавленные матчи"
                             fetchData={crudReadMany}
                             baseUrl={`${BASE_URL}/match/${matchCharacterState}`}
                             tableReloadParentState={matchCharacterState === "survivor" ? reloadSurvivorMatchTable : reloadKillerMatchTable}

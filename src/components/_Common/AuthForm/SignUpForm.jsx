@@ -1,8 +1,10 @@
 import {useAuth} from "../../_DBD/utils/AuthProvider.jsx";
 import {useEffect, useState} from "react";
+import {useNotification} from "../Notification/NotificationProvider.jsx";
 
-function SignUpForm({ from, setIsSignedUpParentState, setAlertMessageParentState, setAlertStatusParentState }) {
+function SignUpForm({ from, setIsSignedUpParentState }) {
     const { signUp } = useAuth();
+    const { addNotification } = useNotification();
 
     // ошибки, пришедшие в ответе с сервера
     const [responseError, setResponseError] = useState("");
@@ -148,7 +150,7 @@ function SignUpForm({ from, setIsSignedUpParentState, setAlertMessageParentState
                         .then(response => response.json())
                         .then(responseData => {
                             if (responseData.status === "SUCCESS") {
-                                setAlertMessageParentState("Успешная регистрация!");
+                                addNotification("Успешная регистрация!", "success");
                                 setIsSignedUpParentState((prev) => (!prev));
                             } else {
                                 setResponseError(responseData.details);
@@ -156,8 +158,7 @@ function SignUpForm({ from, setIsSignedUpParentState, setAlertMessageParentState
                         })
                         .catch((error) => {
                             console.error(error);
-                            setAlertMessageParentState(`Ошибка при попытке войти в аккаунт!\n(Error: ${error})`);
-                            setAlertStatusParentState((prev) => (!prev));
+                            addNotification(`Ошибка при попытке войти в аккаунт!\n(Error: ${error})`, "error");
                         })
                 }}>Sign Up
                 </button>

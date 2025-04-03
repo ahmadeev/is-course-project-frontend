@@ -10,7 +10,6 @@ export const NotificationProvider = ({ children }) => {
         const id = Date.now();
         setNotifications((prev) => [...prev, { id, message, type }]);
 
-        // Удаление через 5 секунд
         setTimeout(() => {
             removeNotification(id);
         }, 5000);
@@ -58,10 +57,10 @@ const styles = {
         minWidth: "250px",
         fontSize: "14px",
     },
-    info: { backgroundColor: "#3498db" }, // Синий
-    success: { backgroundColor: "#2ecc71" }, // Зеленый
-    warning: { backgroundColor: "#f1c40f" }, // Желтый
-    error: { backgroundColor: "#e74c3c" }, // Красный
+    info: { backgroundColor: "#3498db" },
+    success: { backgroundColor: "#2ecc71" },
+    warning: { backgroundColor: "#f1c40f" },
+    error: { backgroundColor: "#e74c3c" },
     closeButton: {
         background: "none",
         border: "none",
