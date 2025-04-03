@@ -143,8 +143,8 @@ export const DataProvider = ({ children }) => {
                 const survivorBuilds = Array.isArray(survivorResponse.data) ? survivorResponse.data : [];
                 const killerBuilds = Array.isArray(killerResponse.data) ? killerResponse.data : [];
 
-                setFavoriteSurvivorBuilds(survivorBuilds);
-                setFavoriteKillerBuilds(killerBuilds);
+                setRatedSurvivorBuilds(survivorBuilds);
+                setRatedKillerBuilds(killerBuilds);
             } catch (error) {
                 console.error('Error fetching rated builds:', error);
                 setRatedKillerBuilds([]);

@@ -67,7 +67,7 @@ const DynamicDataTable = ({
                     throw new Error();
                 }
                 const responseData = await response.json();
-                setData(responseData.data.content); // TODO: пагинационный фикс
+                setData(responseData.data.content || responseData.data); // TODO: пагинационный фикс
             } catch (error) {
                 console.error("Error fetching data:", error);
                 addNotification(error.message, "error");

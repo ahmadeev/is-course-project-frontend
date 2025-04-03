@@ -215,7 +215,12 @@ function Id({ pageTitle }) {
                                                                     } else {
                                                                         const response = await fetch(
                                                                             `${BASE_URL}/favorites/build/${favoriteCharacterState}/${item.id}`,
-                                                                            {method: "DELETE"}
+                                                                            {
+                                                                                method: "DELETE",
+                                                                                headers: {
+                                                                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                                                                }
+                                                                            }
                                                                         );
                                                                         const result = await response.json();
                                                                         if (result.status === "SUCCESS") {
