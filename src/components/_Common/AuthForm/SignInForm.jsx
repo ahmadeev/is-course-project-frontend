@@ -5,7 +5,6 @@ import {useNotification} from "../Notification/NotificationProvider.jsx";
 
 function SignInForm({ from, setIsSignedUpParentState }) {
     const { signIn } = useAuth();
-    const { addNotification } = useNotification();
 
     const navigate = useNavigate();
 
@@ -92,7 +91,6 @@ function SignInForm({ from, setIsSignedUpParentState }) {
                     )
                         .then(responseData => {
                             if (responseData.status === "SUCCESS") {
-                                addNotification("Успешный вход!", "success");
                                 navigate(from, {replace: true})
                             } else {
                                 setResponseError(responseData.details);
@@ -100,7 +98,6 @@ function SignInForm({ from, setIsSignedUpParentState }) {
                         })
                         .catch((error) => {
                             console.error(error);
-                            addNotification(`Ошибка при попытке войти в аккаунт!\n(Error: ${error})`, "error");
                         })
                 }}>Sign In
                 </button>

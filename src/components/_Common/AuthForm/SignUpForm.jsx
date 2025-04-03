@@ -150,7 +150,6 @@ function SignUpForm({ from, setIsSignedUpParentState }) {
                         .then(response => response.json())
                         .then(responseData => {
                             if (responseData.status === "SUCCESS") {
-                                addNotification("Успешная регистрация!", "success");
                                 setIsSignedUpParentState((prev) => (!prev));
                             } else {
                                 setResponseError(responseData.details);
@@ -158,7 +157,6 @@ function SignUpForm({ from, setIsSignedUpParentState }) {
                         })
                         .catch((error) => {
                             console.error(error);
-                            addNotification(`Ошибка при попытке войти в аккаунт!\n(Error: ${error})`, "error");
                         })
                 }}>Sign Up
                 </button>

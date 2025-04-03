@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from 'react';
 import {UserDTO} from "../../../utils/user.model.js";
 import {useData} from "./DataProvider.jsx";
+import {useNotification} from "../../_Common/Notification/NotificationProvider.jsx";
 
 const AuthContext = createContext();
 
@@ -10,6 +11,8 @@ export const AuthProvider = ({ children }) => {
 
     const { BASE_URL } = useData();
     const AUTH_BASE_URL = `${BASE_URL}/auth`;
+
+    const { addNotification } = useNotification();
 
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
         const savedAuthState = sessionStorage.getItem("isAuthenticated");
@@ -65,8 +68,15 @@ export const AuthProvider = ({ children }) => {
                 }
                 return responseData;
             })
+            .then((responseData) => {
+                if (responseData.status === "SUCCESS") {
+                    addNotification("Успешный вход!", "success");
+                }
+                return responseData;
+            })
             .catch(error => {
                 console.error('Error:', error)
+                addNotification(`Ошибка при попытке войти в аккаунт!\n(Error: ${error})`, "error");
             });
     };
 
@@ -82,6 +92,19 @@ export const AuthProvider = ({ children }) => {
             },
             body: JSON.stringify(new UserDTO(name, password, isAdmin)),
         })
+            .then(response => {
+                return response.json();
+            })
+            .then((responseData) => {
+                if (responseData.status === "SUCCESS") {
+                    addNotification("Успешная регистрация!", "success");
+                }
+                return responseData;
+            })
+            .catch(error => {
+                console.error('Error:', error)
+                addNotification(`Ошибка при попытке войти в аккаунт!\n(Error: ${error})`, "error");
+            });
     };
 
     // метод для выхода из системы
