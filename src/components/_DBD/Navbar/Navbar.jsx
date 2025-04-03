@@ -1,3 +1,4 @@
+// Navbar.jsx
 import './Navbar.module.css'
 import styles from './Navbar.module.css'
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
@@ -19,7 +20,7 @@ function Navbar() {
 
     return (
         <>
-            <nav className={styles.navbar}> {/* можно оставить без className, но в css правило для блока nav */}
+            <nav className={styles.navbar}>
                 <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/">home</NavLink>
                 {
                     hasRole("ROLE_USER") && (
@@ -28,7 +29,6 @@ function Navbar() {
                             <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/add-match">add match</NavLink>
                             <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/generate-build">generate build</NavLink>
                             <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/roll-dice">roll dice</NavLink>
-                            <NavLink className={({isActive}) => isActive ? styles.active : ""} to="/id">id</NavLink>
                         </>
                     )
                 }
@@ -40,43 +40,36 @@ function Navbar() {
                 <div style={div_style}>
                     {
                         (!isAuthenticated || sessionStorage.getItem("session-token") === null) &&
-                        <button onClick={() => navigate("/auth")}>
+                        <button
+                            className={styles.loginButton}
+                            onClick={() => navigate("/auth")}
+                        >
+                            <i className="fas fa-sign-in-alt"></i>
                             Log In
                         </button>
-                        // было бы удобнее:
-                        // <p><span>Sign In</span> / <span>Sign In</span></p>
                     }
 
                     {
                         (isAuthenticated && sessionStorage.getItem("session-token") !== null) &&
                         <>
-                            <div
-                                style={{
-                                    width: "5vh",
-                                    height: "5vh",
-                                    position: "relative",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    overflow: "hidden",
+                            <NavLink
+                                to="/id"
+                                className={({isActive}) => `${styles.profileContainer} ${isActive ? styles.active : ''}`}
+                            >
+                                <div className={styles.avatarCircleContainer}>
+                                    <div className={styles.avatarCircle}></div>
+                                </div>
+                                <h3>{username}</h3>
+                            </NavLink>
+                            <button
+                                className={styles.logoutButton}
+                                onClick={() => {
+                                    console.log(from)
+                                    logout();
+                                    navigate(from);
                                 }}
                             >
-                                {/* Outer circle */}
-                                <div
-                                    style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        borderRadius: "50%",
-                                        background: "#ccc",
-                                    }}
-                                ></div>
-                            </div>
-                            <h3>{username}</h3>
-                            <button onClick={() => {
-                                console.log(from)
-                                logout();
-                                navigate(from);
-                            }}>
+                                <i className="fas fa-sign-out-alt"></i>
                                 Log Out
                             </button>
                         </>
