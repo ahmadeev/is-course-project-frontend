@@ -4,6 +4,7 @@ import {useAuth} from "../utils/AuthProvider.jsx";
 import {useNotification} from "../../_Common/Notification/NotificationProvider.jsx"; // Предполагаемый импорт стилей
 
 const DynamicDataTable = ({
+                         header=null,
                          dynamicData=null,
 
                          baseUrl,
@@ -102,7 +103,7 @@ const DynamicDataTable = ({
 
     return (
         <>
-            <h1>Таблица данных</h1>
+            {header && <h1>{header}</h1>}
 
             {/* TODO: временная мера, пока фильтрация и сортировка отсутствуют */}
 {/*            <div className={styles.filter_block}>

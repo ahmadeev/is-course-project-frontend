@@ -13,7 +13,9 @@ function DiceRollerPage({ pageTitle }) {
         <>
             <Navbar/>
             <div className={styles.wrapper}>
-                <DiceRoller />
+                <div className={styles.container + " " + styles.centerer}>
+                    <DiceRoller />
+                </div>
             </div>
         </>
     )

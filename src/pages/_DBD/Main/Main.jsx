@@ -86,23 +86,25 @@ function Main({ pageTitle }) {
             <Navbar/>
             <div className={styles.wrapper}>
 
-                <ToggleSwitch
-                    options={[
-                        {label: "Killer", value: "killer"},
-                        {label: "Survivor", value: "survivor"}
-                    ]}
-                    selected={characterState}
-                    onChange={setCharacterState}
-                />
+                <div className={styles.container + " " + styles.centerer}>
+                    <ToggleSwitch
+                        options={[
+                            {label: "Killer", value: "killer"},
+                            {label: "Survivor", value: "survivor"}
+                        ]}
+                        selected={characterState}
+                        onChange={setCharacterState}
+                    />
 
-                <ToggleSwitch
-                    options={[
-                        {label: "Build", value: "build"},
-                        {label: "Perk", value: "perk"}
-                    ]}
-                    selected={typeState}
-                    onChange={setTypeState}
-                />
+                    <ToggleSwitch
+                        options={[
+                            {label: "Build", value: "build"},
+                            {label: "Perk", value: "perk"}
+                        ]}
+                        selected={typeState}
+                        onChange={setTypeState}
+                    />
+                </div>
 
                 {characterState === "killer" && typeState === "perk" && (
                     <>

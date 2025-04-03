@@ -27,59 +27,64 @@ const MatchCreator = () => {
         <>
             <Navbar />
             <div className={styles.wrapper}>
-                <h1 className={styles.title}>Добавление матча</h1>
-                <ToggleSwitch
-                    options={[
-                        {label: "Killer", value: "killer"},
-                        {label: "Survivor", value: "survivor"}
-                    ]}
-                    selected={characterState}
-                    onChange={setCharacterState}
-                />
-                <ToggleSwitch
-                    options={[
-                        {label: "Win", value: "win"},
-                        {label: "Loss", value: "loss"}
-                    ]}
-                    selected={resultState}
-                    onChange={setResultState}
-                />
-                <div className={styles.selectedPerks}>
-                    {selectedPerks.map(perk => (
-                        <div key={perk.id} className={styles.perkItem}>
-                            <img src={stub} alt={perk.name}/>
-                            <p>{perk.name}</p>
-                        </div>
-                    ))}
+                <div className={styles.container + " " + styles.centerer}>
+                    <h1 className={styles.title}>Добавление матча</h1>
+                    <ToggleSwitch
+                        options={[
+                            {label: "Killer", value: "killer"},
+                            {label: "Survivor", value: "survivor"}
+                        ]}
+                        selected={characterState}
+                        onChange={setCharacterState}
+                    />
+                    <ToggleSwitch
+                        options={[
+                            {label: "Win", value: "win"},
+                            {label: "Loss", value: "loss"}
+                        ]}
+                        selected={resultState}
+                        onChange={setResultState}
+                    />
+                    <div className={styles.selectedPerks}>
+                        {selectedPerks.map(perk => (
+                            <div key={perk.id} className={styles.perkItem}>
+                                <img src={stub} alt={perk.name}/>
+                                <p>{perk.name}</p>
+                            </div>
+                        ))}
+                    </div>
+                    <button
+                        className={styles.selectButton}
+                        onClick={() => setModalIsOpen(true)}
+                    >
+                        Выбрать перк
+                    </button>
+                    <button
+                        className={styles.selectButton}
+                        onClick={() => {
+                            fetch(`${BASE_URL}/match/${characterState}`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                                },
+                                body: JSON.stringify({
+                                    build: {perks: selectedPerks, id: -1},
+                                    won: resultState === "win"
+                                }) // TODO: id -- костыль (long -> Long)
+                            })
+                                .then((res) => res.json())
+                                .then((result) => {
+                                    console.log(result);
+                                })
+                                .catch((error) => {
+                                    console.error(error);
+                                })
+                        }}
+                    >
+                        Отправить
+                    </button>
                 </div>
-                <button
-                    className={styles.selectButton}
-                    onClick={() => setModalIsOpen(true)}
-                >
-                    Выбрать перк
-                </button>
-                <button
-                    className={styles.selectButton}
-                    onClick={() => {
-                        fetch(`${BASE_URL}/match/${characterState}`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
-                            },
-                            body: JSON.stringify({build: {perks: selectedPerks, id: -1}, won: resultState === "win"}) // TODO: id -- костыль (long -> Long)
-                        })
-                            .then((res) => res.json())
-                            .then((result) => {
-                                console.log(result);
-                            })
-                            .catch((error) => {
-                                console.error(error);
-                            })
-                    }}
-                >
-                    Отправить
-                </button>
                 <Modal
                     active={modalIsOpen}
                     setActive={setModalIsOpen}
