@@ -79,7 +79,11 @@ const MatchCreator = () => {
                                 .then((res) => res.json())
                                 .then((result) => {
                                     console.log(result);
-                                    addNotification("Успешно добавлены результаты матча!", "success");
+                                    if (result.status === "SUCCESS") {
+                                        addNotification("Успешно добавлены результаты матча!", "success");
+                                    } else {
+                                        throw new Error(result.details);
+                                    }
                                 })
                                 .catch((error) => {
                                     console.error(error);
