@@ -9,6 +9,7 @@ import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
 import CollapseToggleSwitch from "../../../components/_Common/CollapseToggleSwitch/CollapseToggleSwitch.jsx";
 import TagList from "../../../components/_DBD/TagList/TagList.jsx";
 import Modal from "../../../components/_Common/Modal/Modal.jsx";
+import ProfileCard from "../../../components/_DBD/ProfileCard/ProfileCard.jsx";
 
 function Id({ pageTitle }) {
     // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
@@ -89,6 +90,9 @@ function Id({ pageTitle }) {
         <>
             <Navbar/>
             <div className={styles.wrapper}>
+                <div className={styles.container + " " + styles.centerer}>
+                    <ProfileCard />
+                </div>
                 <div className={styles.container + " " + styles.centerer}>
                     <div className={styles.switch_container}>
                         <CollapseToggleSwitch

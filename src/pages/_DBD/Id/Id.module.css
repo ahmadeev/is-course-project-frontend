@@ -69,6 +69,8 @@
     min-width: 400px;
     margin: 0.5rem auto;
     box-sizing: border-box;
+
+    width: 100%;
 }
 
 .centerer {

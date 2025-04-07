@@ -1,0 +1,86 @@
+.profileContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    max-width: 600px;
+}
+
+.profilePhoto {
+    width: 180px;
+    height: 180px;
+    background-color: #ccc;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    width: 100%;
+    min-height: 180px; /* Увеличено до 180px для соответствия фото */
+    justify-content: space-between;
+}
+
+.profileName {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #686C5E;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+.profileDescription {
+    width: 100%;
+    max-height: calc(180px - 2.16rem); /* Высота фото (180px) минус высота имени (1.8rem * 1.2) */
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    padding: 10px;
+    color: #686C5E;
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.profileActions {
+    display: flex;
+    gap: 10px;
+    margin-top: 0;
+    align-self: flex-start;
+}
+
+.editButton, .statsButton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.editButton {
+    background-color: #28a745;
+    color: white;
+}
+
+.editButton:hover {
+    background-color: #218838;
+}
+
+.statsButton {
+    background-color: #007bff;
+    color: white;
+}
+
+.statsButton:hover {
+    background-color: #0056b3;
+}
