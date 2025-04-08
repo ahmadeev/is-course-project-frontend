@@ -27,7 +27,7 @@ function Id({ pageTitle }) {
     const [reloadKillerBuildTable, setReloadKillerBuildTable] = useState(false);
     const [reloadSurvivorBuildTable, setReloadSurvivorBuildTable] = useState(false);
 
-    const { hasRole } = useAuth();
+    const { hasRole, username } = useAuth();
     // ------
     const [foldMatches, setFoldMatches] = useState(true);
     const [matchCharacterState, setMatchCharacterState] = useState("killer");
@@ -47,6 +47,9 @@ function Id({ pageTitle }) {
         setCurrentBuild(item);
         setIsBuildTagModalOpen(true);
     }
+    // ------
+    const [userSurvivorBuildStats, setUserSurvivorBuildStats] = useState(null);
+    const [userKillerBuildStats, setUserKillerBuildStats] = useState(null);
 
     useEffect(() => {
         if (currentBuild === null) return;
@@ -85,13 +88,75 @@ function Id({ pageTitle }) {
         fetchRating();
     }, [currentBuild, isTagListReloaded]);
 
+    useEffect(() => {
+        const fetchUserKillerMatchStats = async () => {
+            await fetch(`${BASE_URL}/match-stats/killer/user-match`, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                }
+            })
+                .then((res) => res.json())
+                .then((result) => {
+                    setUserKillerBuildStats(result.data);
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
+
+        const fetchUserSurvivorMatchStats = async () => {
+            await fetch(`${BASE_URL}/match-stats/survivor/user-match`, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('session-token')}`
+                }
+            })
+                .then((res) => res.json())
+                .then((result) => {
+                    setUserSurvivorBuildStats(result.data);
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
+
+        fetchUserKillerMatchStats();
+        fetchUserSurvivorMatchStats()
+    }, []);
 
     return (
         <>
             <Navbar/>
             <div className={styles.wrapper}>
                 <div className={styles.container + " " + styles.centerer}>
-                    <ProfileCard />
+                    {/*<ProfileCard />*/}
+                    {username && (
+                        <>
+                            <p>
+                                Пользователь: <b>{username}</b><br/>
+                                Статус: <b>{hasRole("ROLE_ADMIN") ? "Администратор" : "Пользователь"}</b><br/>
+                            </p>
+                        </>
+                    )}
+                    {userKillerBuildStats && (
+                        <>
+                            <p>
+                                Сыграно матчей за убийц: <b>{userKillerBuildStats.totalMatches}</b><br/>
+                                Выиграно: <b>{userKillerBuildStats.wins}</b><br/>
+                                Проиграно: <b>{userKillerBuildStats.losses}</b><br/>
+                            </p>
+                        </>
+                    )}
+                    {userSurvivorBuildStats && (
+                        <>
+                            <p>
+                                Сыграно матчей за выживших: <b>{userSurvivorBuildStats.totalMatches}</b><br/>
+                                Выиграно: <b>{userSurvivorBuildStats.wins}</b><br/>
+                                Проиграно: <b>{userSurvivorBuildStats.losses}</b><br/>
+                            </p>
+                        </>
+                    )}
                 </div>
                 <div className={styles.container + " " + styles.centerer}>
                     <div className={styles.switch_container}>
