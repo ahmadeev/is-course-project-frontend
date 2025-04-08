@@ -10,6 +10,7 @@ import CollapseToggleSwitch from "../../../components/_Common/CollapseToggleSwit
 import TagList from "../../../components/_DBD/TagList/TagList.jsx";
 import Modal from "../../../components/_Common/Modal/Modal.jsx";
 import ProfileCard from "../../../components/_DBD/ProfileCard/ProfileCard.jsx";
+import BuildCard from "../../../components/_DBD/BuildCard/BuildCard.jsx";
 
 function Id({ pageTitle }) {
     // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
@@ -364,6 +365,15 @@ function Id({ pageTitle }) {
                     active={isBuildTagModalOpen}
                     setActive={setIsBuildTagModalOpen}
                 >
+                    {
+                        currentBuild && (
+                            <BuildCard
+                                data={currentBuild}
+                                characterState={favoriteCharacterState}
+                            />
+                        )
+                    }
+
                     <h2>Комментарии</h2>
 
                     {

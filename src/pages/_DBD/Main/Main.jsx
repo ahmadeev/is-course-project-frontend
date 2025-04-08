@@ -8,6 +8,7 @@ import ToggleSwitch from "../../../components/_Common/ToggleSwitch/ToggleSwitch.
 import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
 import Modal from "../../../components/_Common/Modal/Modal.jsx";
 import TagList from "../../../components/_DBD/TagList/TagList.jsx";
+import BuildCard from "../../../components/_DBD/BuildCard/BuildCard.jsx";
 
 function Main({ pageTitle }) {
     // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
@@ -399,6 +400,15 @@ function Main({ pageTitle }) {
                     active={isBuildTagModalOpen}
                     setActive={setIsBuildTagModalOpen}
                 >
+                    {
+                        currentBuild && (
+                            <BuildCard
+                                data={currentBuild}
+                                characterState={characterState}
+                            />
+                        )
+                    }
+
                     <h2>Комментарии</h2>
 
                     {
