@@ -11,10 +11,13 @@ import TagList from "../../../components/_DBD/TagList/TagList.jsx";
 import Modal from "../../../components/_Common/Modal/Modal.jsx";
 import ProfileCard from "../../../components/_DBD/ProfileCard/ProfileCard.jsx";
 import BuildCard from "../../../components/_DBD/BuildCard/BuildCard.jsx";
+import {useNotification} from "../../../components/_Common/Notification/NotificationProvider.jsx";
 
 function Id({ pageTitle }) {
     // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
     const { BASE_URL } = useData();
+
+    const { addNotification } = useNotification();
 
     useEffect(() => {
         document.title = pageTitle;
@@ -241,7 +244,11 @@ function Id({ pageTitle }) {
                                                         }
                                                         {
                                                             !hasRole("ROLE_ADMIN") && (
-                                                                "" + item.approvedByAdmin
+                                                                <b>
+                                                                    <span style={{
+                                                                        color: item.approvedByAdmin ? "green" : "red"
+                                                                    }}>{"" + item.approvedByAdmin}</span>
+                                                                </b>
                                                             )
                                                         }
 
@@ -392,9 +399,13 @@ function Id({ pageTitle }) {
                                     })
                                         .then((res) => res.json())
                                         .then((result) => {
+                                            if (result.status !== "SUCCESS") {
+                                                throw new Error(result.details);
+                                            }
                                             setIsTagListReloaded(prev => !prev);
                                         })
                                         .catch((error) => {
+                                            addNotification(error.message, "error");
                                             console.error(error);
                                         })
                                 }}
@@ -460,9 +471,13 @@ function Id({ pageTitle }) {
                                     })
                                         .then((res) => res.json())
                                         .then((result) => {
+                                            if (result.status !== "SUCCESS") {
+                                                throw new Error(result.details);
+                                            }
                                             setIsTagListReloaded(prev => !prev);
                                         })
                                         .catch((error) => {
+                                            addNotification(error.message, "error");
                                             console.error(error);
                                         })
                                 }}>Отправить

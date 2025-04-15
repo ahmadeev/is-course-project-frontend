@@ -9,6 +9,7 @@ import {useAuth} from "../../../components/_DBD/utils/AuthProvider.jsx";
 import Modal from "../../../components/_Common/Modal/Modal.jsx";
 import TagList from "../../../components/_DBD/TagList/TagList.jsx";
 import BuildCard from "../../../components/_DBD/BuildCard/BuildCard.jsx";
+import {useNotification} from "../../../components/_Common/Notification/NotificationProvider.jsx";
 
 function Main({ pageTitle }) {
     // const BASE_URL = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
@@ -19,6 +20,7 @@ function Main({ pageTitle }) {
     })
 
     const { hasRole } = useAuth();
+    const { addNotification } = useNotification();
 
     const [characterState, setCharacterState] = useState("killer");
     const [typeState, setTypeState] = useState("build");
@@ -195,7 +197,11 @@ function Main({ pageTitle }) {
                                                             }
                                                             {
                                                                 !hasRole("ROLE_ADMIN") && (
-                                                                    "" + item.approvedByAdmin
+                                                                    <b>
+                                                                        <span style={{
+                                                                            color: item.approvedByAdmin ? "green" : "red"
+                                                                        }}>{"" + item.approvedByAdmin}</span>
+                                                                    </b>
                                                                 )
                                                             }
 
@@ -327,7 +333,11 @@ function Main({ pageTitle }) {
                                                         }
                                                         {
                                                             !hasRole("ROLE_ADMIN") && (
-                                                                "" + item.approvedByAdmin
+                                                                <b>
+                                                                    <span style={{
+                                                                        color: item.approvedByAdmin ? "green" : "red"
+                                                                    }}>{"" + item.approvedByAdmin}</span>
+                                                                </b>
                                                             )
                                                         }
                                                     </td>
@@ -427,9 +437,13 @@ function Main({ pageTitle }) {
                                     })
                                         .then((res) => res.json())
                                         .then((result) => {
+                                            if (result.status !== "SUCCESS") {
+                                                throw new Error(result.details);
+                                            }
                                             setIsTagListReloaded(prev => !prev);
                                         })
                                         .catch((error) => {
+                                            addNotification(error.message, "error");
                                             console.error(error);
                                         })
                                 }}
@@ -495,9 +509,13 @@ function Main({ pageTitle }) {
                                     })
                                         .then((res) => res.json())
                                         .then((result) => {
+                                            if (result.status !== "SUCCESS") {
+                                                throw new Error(result.details);
+                                            }
                                             setIsTagListReloaded(prev => !prev);
                                         })
                                         .catch((error) => {
+                                            addNotification(error.message, "error");
                                             console.error(error);
                                         })
                                 }}>Отправить
