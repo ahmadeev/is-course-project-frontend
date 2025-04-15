@@ -34,6 +34,11 @@ const DynamicDataTable = ({
     const [sortDir, setSortDir] = useState("ASC");
     const [isLoading, setIsLoading] = useState(true);
 
+    // ------ пагинационный фикс
+    const [totalElements, setTotalElements] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    // ------
+
     const handlePageChange = (direction) => {
         setPage((prevPage) => prevPage + direction);
     };
@@ -69,6 +74,8 @@ const DynamicDataTable = ({
                 }
                 const responseData = await response.json();
                 setData(responseData.data.content || responseData.data); // TODO: пагинационный фикс
+                setTotalElements(responseData.data.content ? responseData.data.totalElements : 0);
+                setTotalPages(responseData.data.content ? responseData.data.totalPages : 0);
             } catch (error) {
                 console.error("Error fetching data:", error);
                 addNotification(error.message, "error");
@@ -212,14 +219,33 @@ const DynamicDataTable = ({
                 >&gt;</button>
                 <button
                     className={styles.turn_page}
-                    disabled={true}
+                    onClick={() => handlePageChange(totalPages - (page + 1))}
+                    disabled={totalPages === 0 || page + 1 >= totalPages}
                 >&gt;&gt;</button>
             </div>
 
             <div className={styles.button_block}>
-                <a style={{textDecoration: size === 10 ? "underline" : ""}} onClick={() => setSize(10)}>10</a>
-                <a style={{textDecoration: size === 50 ? "underline" : ""}} onClick={() => setSize(50)}>50</a>
-                <a style={{textDecoration: size === 100 ? "underline" : ""}} onClick={() => setSize(100)}>100</a>
+                <a style={{textDecoration: size === 10 ? "underline" : ""}} onClick={() => {
+                    const newSize = 10;
+                    setSize(newSize);
+                    totalPages === 0 ? setPage(0) : setPage(
+                        Math.floor(page * size / newSize)
+                    );
+                }}>10</a>
+                <a style={{textDecoration: size === 50 ? "underline" : ""}} onClick={() => {
+                    const newSize = 50;
+                    setSize(newSize);
+                    totalPages === 0 ? setPage(0) : setPage(
+                        Math.floor(page * size / newSize)
+                    );
+                }}>50</a>
+                <a style={{textDecoration: size === 100 ? "underline" : ""}} onClick={() => {
+                    const newSize = 100;
+                    setSize(newSize);
+                    totalPages === 0 ? setPage(0) : setPage(
+                        Math.floor(page * size / newSize)
+                    );
+                }}>100</a>
             </div>
         </>
     );

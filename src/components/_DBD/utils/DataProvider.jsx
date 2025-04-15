@@ -36,8 +36,9 @@ export const DataProvider = ({ children }) => {
 
     const [isRatedLoaded, setIsRatedLoaded] = useState(false);
 
-    const RATED_SURVIVOR_BUILDS_URL = `${BASE_URL}/build/survivor/rating`;
-    const RATED_KILLER_BUILDS_URL = `${BASE_URL}/build/killer/rating`;
+    // TODO: rating -> ratings
+    const RATED_SURVIVOR_BUILDS_URL = `${BASE_URL}/build/survivor/ratings`;
+    const RATED_KILLER_BUILDS_URL = `${BASE_URL}/build/killer/ratings`;
 
 
     useEffect(() => {
