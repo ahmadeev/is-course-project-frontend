@@ -89,6 +89,7 @@ function SignInViaCodeForm({ from, setIsSignedUpParentState }) {
                 <button disabled={(!submitButtonState)} onClick={() => {
                     event.preventDefault();
 
+                    // TODO: можно слушать когда пользователь закрывает страницу и закрывать сессию
                     if (!isDisabled) {
                         signInViaCodeName(
                             username
