@@ -102,6 +102,27 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
+    const signInViaCodeNameStop = (name) => {
+        console.log("Stop sign in via code...");
+
+        // было так:
+        // crudCreate(`${BASE_URL}/sign-in`, new UserDTO(name, password));
+        return fetch(`${AUTH_BASE_URL}/sign-in-via-code/stop`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(new UserDTO(name)),
+        })
+            .then(response => {
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error:', error)
+                addNotification(`Ошибка при попытке отменить получение кодов!\n(Error: ${error})`, "error");
+            });
+    };
+
     // метод для входа в систему
     const signInViaCodeCode = (name, password) => {
         console.log("Sign in...");
@@ -212,7 +233,7 @@ export const AuthProvider = ({ children }) => {
     return (
         <AuthContext.Provider value={{
             isAuthenticated, username, roles, hasRole, signIn, signUp, logout, checkAuthStatus, user, // TODO: new!!!
-            signInViaCodeName, signInViaCodeCode
+            signInViaCodeName, signInViaCodeNameStop, signInViaCodeCode
         }}>
             {children}
         </AuthContext.Provider>

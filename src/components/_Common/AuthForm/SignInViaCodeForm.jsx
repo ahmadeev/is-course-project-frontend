@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {useNotification} from "../Notification/NotificationProvider.jsx";
 
 function SignInViaCodeForm({ from, setIsSignedUpParentState }) {
-    const { signInViaCodeName, signInViaCodeCode } = useAuth();
+    const { signInViaCodeName, signInViaCodeNameStop, signInViaCodeCode } = useAuth();
 
     const navigate = useNavigate();
 
@@ -79,7 +79,8 @@ function SignInViaCodeForm({ from, setIsSignedUpParentState }) {
                 </label><br/>
 
                 {
-                    (isUsernameTouched && invalidUsernameError) && <p style={{color: "red"}}>Неверное имя пользователя.</p>
+                    (isUsernameTouched && invalidUsernameError) &&
+                    <p style={{color: "red"}}>Неверное имя пользователя.</p>
                 }
 
                 {
@@ -125,11 +126,33 @@ function SignInViaCodeForm({ from, setIsSignedUpParentState }) {
                 </button>
             </form>
             <br/>
+            {isDisabled && (
+                <>
+                    <button onClick={() => {
+                        signInViaCodeNameStop(
+                            username
+                        )
+                            .then(responseData => {
+                                if (responseData.status === "SUCCESS") {
+                                    setIsDisabled(false);
+                                } else {
+                                    setResponseError(responseData.details);
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(error);
+                            })
+                    }}>
+                        Отмена
+                    </button>
+                    <br/>
+                </>
+            )}
             <a onClick={() => {
                 setIsSignedUpParentState((prev) => (!prev));
             }}>Sign Up</a>
         </div>
     )
-    }
+}
 
 export default SignInViaCodeForm;
