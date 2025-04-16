@@ -3,10 +3,10 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-    // dev
+    // TODO: dev
     const bu = "http://localhost:25000/is-course-project-1.0-SNAPSHOT/api";
 
-    // prod
+    // TODO: prod
     // const bu = "/api";
 
     const [BASE_URL, setBASE_URL] = useState(bu);

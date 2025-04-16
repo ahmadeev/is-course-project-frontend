@@ -80,6 +80,76 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
+    // метод для входа в систему
+    const signInViaCodeName = (name) => {
+        console.log("Sign in via code...");
+
+        // было так:
+        // crudCreate(`${BASE_URL}/sign-in`, new UserDTO(name, password));
+        return fetch(`${AUTH_BASE_URL}/sign-in-via-code`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(new UserDTO(name)),
+        })
+            .then(response => {
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error:', error)
+                addNotification(`Ошибка при попытке получить коды!\n(Error: ${error})`, "error");
+            });
+    };
+
+    // метод для входа в систему
+    const signInViaCodeCode = (name, password) => {
+        console.log("Sign in...");
+
+        // было так:
+        // crudCreate(`${BASE_URL}/sign-in`, new UserDTO(name, password));
+        return fetch(`${AUTH_BASE_URL}/sign-in-via-code`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(new UserDTO(name, password)),
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then((responseData) => {
+                if (responseData.status === "SUCCESS") {
+                    setIsAuthenticated(true);
+                    setUsername(name);
+
+                    // костыль, позволяющий не использовать many-to-many на сервере
+                    const roles = [...responseData.data.roles];
+                    if (roles.includes("ADMIN") && !roles.includes("USER")) roles.push("USER")
+                    setRoles(roles);
+
+                    sessionStorage.setItem("isAuthenticated", "true");
+                    sessionStorage.setItem("session-token", responseData.data.token)
+                    sessionStorage.setItem("session-username", name)
+                    sessionStorage.setItem("session-roles", JSON.stringify(roles));
+
+                    // TODO: new
+                    setUser({id: 1, username: name, roles: roles});
+                }
+                return responseData;
+            })
+            .then((responseData) => {
+                if (responseData.status === "SUCCESS") {
+                    addNotification("Успешный вход!", "success");
+                }
+                return responseData;
+            })
+            .catch(error => {
+                console.error('Error:', error)
+                addNotification(`Ошибка при попытке войти в аккаунт!\n(Error: ${error})`, "error");
+            });
+    };
+
     // метод для регистрации в системе
     const signUp = (name, password, isAdmin) => {
         console.log("Sign up...");
@@ -141,7 +211,8 @@ export const AuthProvider = ({ children }) => {
     // значения, которые будут доступны всем компонентам, использующим AuthContext
     return (
         <AuthContext.Provider value={{
-            isAuthenticated, username, roles, hasRole, signIn, signUp, logout, checkAuthStatus, user // TODO: new!!!
+            isAuthenticated, username, roles, hasRole, signIn, signUp, logout, checkAuthStatus, user, // TODO: new!!!
+            signInViaCodeName, signInViaCodeCode
         }}>
             {children}
         </AuthContext.Provider>
